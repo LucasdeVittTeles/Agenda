@@ -1,0 +1,143 @@
+# =========================================================
+# Agenda - .NET 8 + React + Docker
+# =========================================================
+
+# ---------------------------------------------------------
+# Visual Studio
+# ---------------------------------------------------------
+
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# ---------------------------------------------------------
+# .NET / Build
+# ---------------------------------------------------------
+
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Test results
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# .NET generated files
+GeneratedFiles/
+artifacts/
+
+# ---------------------------------------------------------
+# NuGet
+# ---------------------------------------------------------
+
+*.nupkg
+*.snupkg
+packages/
+
+# ---------------------------------------------------------
+# Visual Studio Code
+# ---------------------------------------------------------
+
+.vscode/
+
+# ---------------------------------------------------------
+# JetBrains Rider / ReSharper
+# ---------------------------------------------------------
+
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# ---------------------------------------------------------
+# React / Node
+# ---------------------------------------------------------
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------
+# Docker
+# ---------------------------------------------------------
+
+# Local Docker environment files
+docker-compose.override.yml
+
+# Docker local volumes
+.docker/
+
+# ---------------------------------------------------------
+# Database / Local development
+# ---------------------------------------------------------
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
+# ---------------------------------------------------------
+# Secrets / Credentials
+# ---------------------------------------------------------
+
+# User Secrets should normally live outside the repository,
+# but prevent accidental secret files from being committed.
+secrets.json
+
+# Certificates / development HTTPS
+*.pfx
+*.p12
+
+# Local certificate folders
+**/https/
+
+# ---------------------------------------------------------
+# ASP.NET Core
+# ---------------------------------------------------------
+
+# Local launch settings can contain machine-specific values.
+# Keep this commented unless we decide to exclude it.
+# **/Properties/launchSettings.json
+
+# ---------------------------------------------------------
+# OS
+# ---------------------------------------------------------
+
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ---------------------------------------------------------
+# Temporary files
+# ---------------------------------------------------------
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+# ---------------------------------------------------------
+# Publish
+# ---------------------------------------------------------
+
+*.publishsettings
+PublishScripts/
