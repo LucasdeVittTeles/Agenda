@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Agenda.Domain\Agenda.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Context\Configurations\" />
-  </ItemGroup>
-
 </Project>
