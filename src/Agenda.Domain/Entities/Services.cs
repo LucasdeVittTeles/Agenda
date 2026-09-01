@@ -2,7 +2,6 @@
 {
     public class Services
     {
-
         public int Id { get; set; }
         public int Business_Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -11,6 +10,7 @@
         public bool Is_Active { get; set; }
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
+        public Business Business { get; private set; }
         public List<ServiceStaff> ServiceStaffs { get; set; } = new List<ServiceStaff>();
 
     }

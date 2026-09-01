@@ -19,7 +19,6 @@ namespace Agenda.Infrastructure.Context.Configurations
                     .HasForeignKey(x => x.Service_Id)
                     .IsRequired();
 
-            // Staff/User FK
             builder.Property(x => x.Staff_User_Id)
                 .IsRequired();
 
@@ -28,7 +27,6 @@ namespace Agenda.Infrastructure.Context.Configurations
                     .HasForeignKey(x => x.Staff_User_Id)
                     .IsRequired();
 
-            // Prevent duplicate association
             builder.HasIndex(x => new
             {
                 x.Service_Id,

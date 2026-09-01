@@ -4,31 +4,34 @@ namespace Agenda.Domain.Entities
 {
     public class Users
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
-        public string Name { get; private set; } = string.Empty;
+        public int BusinessId { get; set; }
 
-        public string Email { get; private set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public string? Phone { get; private set; }
+        public string Email { get; set; } = string.Empty;
 
-        public string? AvatarUrl { get; private set; }
+        public string PasswordHash { get; set; } = string.Empty;
 
-        public int BusinessId { get; private set; }
+        public UserRoles Role { get; set; }
 
-        public StaffType? StaffType { get; private set; }
+        public StaffType? StaffType { get; set; }
 
-        public UserRoles Role { get; private set; }
+        public string? Phone { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; private set; }
+        public string? AvatarUrl { get; set; }
 
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime Created_At { get; set; }
 
+        public DateTime Updated_At { get; set; }
+
+        // Navigation Properties
+
+        public Business Business { get; private set; }
         public List<Availability> Availabilities { get; private set; } = new List<Availability>();
-
         public List<BlockedTimes> BlockedTimes { get; set; } = new List<BlockedTimes>();
-
-        public ICollection<ServiceStaff> ServiceStaff { get; private set; } = new List<ServiceStaff>();
+        public List<ServiceStaff> ServiceStaff { get; private set; } = new List<ServiceStaff>();
 
     }
 }

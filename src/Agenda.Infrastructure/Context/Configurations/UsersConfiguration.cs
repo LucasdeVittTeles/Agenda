@@ -24,34 +24,36 @@ namespace Agenda.Infrastructure.Context.Configurations
                 .IsUnique()
                 .HasDatabaseName("IX_users_email_unique");
 
-            // Role
+            builder.Property(x => x.BusinessId)
+                   .IsRequired();
+
+            builder.HasOne(x => x.Business)
+                .WithMany(x => x.Users)
+                .HasForeignKey(x => x.BusinessId)
+                .IsRequired();
+
             builder.Property(x => x.Role)
                 .HasConversion<string>()
                 .HasMaxLength(20)
                 .IsRequired();
 
-            // StaffType
             builder.Property(x => x.StaffType)
                 .HasConversion<string>()
                 .HasMaxLength(30)
                 .IsRequired(false);
 
-            // Phone
             builder.Property(x => x.Phone)
                 .HasMaxLength(20)
                 .IsRequired();
 
-            // AvatarUrl
             builder.Property(x => x.AvatarUrl)
                 .HasMaxLength(500)
                 .IsRequired(false);
 
-            // CreatedAt
-            builder.Property(x => x.CreatedAt)
+            builder.Property(x => x.Created_At)
                 .IsRequired();
 
-            // UpdatedAt
-            builder.Property(x => x.UpdatedAt)
+            builder.Property(x => x.Updated_At)
                 .IsRequired();
 
         }

@@ -14,26 +14,59 @@ namespace Agenda.Infrastructure.Context.Configurations
             builder.Property(x => x.Business_Id)
                 .IsRequired();
 
+
+            builder.HasOne(x => x.Business)
+                .WithMany(x => x.Appointments)
+                .HasForeignKey(x => x.Business_Id)
+                .IsRequired();
+
+            // Client User
+
             builder.Property(x => x.Client_User_Id)
                 .IsRequired();
 
+            builder.HasOne(x => x.ClientUser)
+                .WithMany()
+                .HasForeignKey(x => x.Client_User_Id)
+                .IsRequired();
+
+            // Service Staff
+
             builder.Property(x => x.Service_Staff_Id)
-            .IsRequired();
+                .IsRequired();
+
+            builder.HasOne(x => x.ServiceStaff)
+                .WithMany()
+                .HasForeignKey(x => x.Service_Staff_Id)
+                .IsRequired();
+
+            // Date/Time
 
             builder.Property(x => x.Start_Datetime)
-               .IsRequired();
+                .IsRequired();
 
             builder.Property(x => x.End_Datetime)
-              .IsRequired();
+                .IsRequired();
+
+            // Status
+
+            builder.Property(x => x.Status)
+                .HasConversion<string>()
+                .HasMaxLength(20)
+                .IsRequired();
+
+            // Notes
 
             builder.Property(x => x.Notes)
-              .IsRequired(false);
+                .IsRequired(false);
+
+            // Audit
 
             builder.Property(x => x.Created_At)
-               .IsRequired();
+                .IsRequired();
 
             builder.Property(x => x.Updated_At)
-               .IsRequired();
+                .IsRequired();
 
         }
 

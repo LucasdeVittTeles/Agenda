@@ -16,5 +16,11 @@ namespace Agenda.Domain.Entities
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
 
+        // Navigation Properties
+
+        public Business Business { get; private set; }
+        public Users ClientUser { get; private set; }
+        public ServiceStaff ServiceStaff { get; private set; }
+
     }
 }

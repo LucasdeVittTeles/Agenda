@@ -30,6 +30,13 @@ namespace Agenda.Infrastructure.Context.Configurations
                 .HasMaxLength(255)
                 .IsRequired(false);
 
+
+            builder.Property(x => x.Created_At)
+                .IsRequired();
+
+            builder.Property(x => x.Updated_At)
+                .IsRequired();
+
         }
 
     }

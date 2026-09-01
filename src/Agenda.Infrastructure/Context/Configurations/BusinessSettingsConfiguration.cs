@@ -39,6 +39,7 @@ namespace Agenda.Infrastructure.Context.Configurations
                .IsRequired();
 
             builder.Property(x => x.Working_Days)
+               .HasColumnType("jsonb")
                .IsRequired();
 
             builder.Property(x => x.Theme_Color)

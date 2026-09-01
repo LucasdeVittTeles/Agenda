@@ -15,9 +15,10 @@ namespace Agenda.Infrastructure.Context.Configurations
             builder.Property(x => x.Business_Id)
                 .IsRequired();
 
-            builder.HasOne<Business>()
-                .WithMany()
-                .HasForeignKey(x => x.Business_Id);
+            builder.HasOne(x => x.Business)
+            .WithMany(x => x.Services)
+            .HasForeignKey(x => x.Business_Id)
+            .IsRequired();
 
             builder.Property(x => x.Name)
                 .HasMaxLength(150)

@@ -29,6 +29,15 @@ namespace Agenda.Infrastructure.Context.Configurations
             builder.Property(x => x.End_Time)
                 .IsRequired();
 
+            builder.Property(x => x.Is_Active)
+                .IsRequired();
+
+            builder.Property(x => x.Created_At)
+                .IsRequired();
+
+            builder.Property(x => x.Updated_At)
+                .IsRequired();
+
         }
 
     }
