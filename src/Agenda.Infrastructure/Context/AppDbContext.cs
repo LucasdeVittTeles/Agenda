@@ -19,5 +19,14 @@ namespace Agenda.Infrastructure.Context
         public DbSet<BlockedTimes> BlockedTimes => Set<BlockedTimes>();
         public DbSet<Appointments> Appointments => Set<Appointments>();
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(AppDbContext).Assembly
+            );
+        }
+
     }
 }
