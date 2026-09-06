@@ -1,12 +1,14 @@
 using Agenda.Infrastructure.Context;
 using Agenda.Application;
 using Microsoft.EntityFrameworkCore;
+using Agenda.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
 builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
