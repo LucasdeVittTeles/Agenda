@@ -12,7 +12,11 @@ namespace Agenda.Infrastructure.Context.Configurations
 
             builder.ToTable("availability");
 
+            builder.Property(x => x.Id)
+                .HasColumnName("id");
+
             builder.Property(x => x.User_Id)
+                .HasColumnName("user_id")
                 .IsRequired();
 
             builder.HasOne(x => x.User)
@@ -21,21 +25,27 @@ namespace Agenda.Infrastructure.Context.Configurations
                 .IsRequired();
 
             builder.Property(x => x.Week_Day)
+                .HasColumnName("week_day")
                 .IsRequired();
 
             builder.Property(x => x.Start_Time)
+                .HasColumnName("start_time")
                 .IsRequired();
 
             builder.Property(x => x.End_Time)
+                .HasColumnName("end_time")
                 .IsRequired();
 
             builder.Property(x => x.Is_Active)
+                .HasColumnName("is_active")
                 .IsRequired();
 
             builder.Property(x => x.Created_At)
+                .HasColumnName("created_at")
                 .IsRequired();
 
             builder.Property(x => x.Updated_At)
+                .HasColumnName("updated_at")
                 .IsRequired();
 
         }

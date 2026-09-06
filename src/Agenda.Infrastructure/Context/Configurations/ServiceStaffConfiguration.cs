@@ -11,7 +11,11 @@ namespace Agenda.Infrastructure.Context.Configurations
 
             builder.ToTable("service_staff");
 
+            builder.Property(x => x.Id)
+                .HasColumnName("id");
+
             builder.Property(x => x.Service_Id)
+                .HasColumnName("service_id")
                 .IsRequired();
 
             builder.HasOne(x => x.Service)
@@ -20,6 +24,7 @@ namespace Agenda.Infrastructure.Context.Configurations
                     .IsRequired();
 
             builder.Property(x => x.Staff_User_Id)
+                .HasColumnName("staff_user_id")
                 .IsRequired();
 
             builder.HasOne(x => x.StaffUser)
@@ -35,19 +40,24 @@ namespace Agenda.Infrastructure.Context.Configurations
             .IsUnique();
 
             builder.Property(x => x.Price)
+                .HasColumnName("price")
                 .HasPrecision(10, 2)
                 .IsRequired();
 
             builder.Property(x => x.Duration_Minutes)
+              .HasColumnName("duration_minutes")
               .IsRequired(false);
 
             builder.Property(x => x.Is_Active)
+              .HasColumnName("is_active")
               .IsRequired();
 
             builder.Property(x => x.Created_At)
+                .HasColumnName("created_at")
                 .IsRequired();
 
             builder.Property(x => x.Updated_At)
+                .HasColumnName("updated_at")
                 .IsRequired();
 
         }

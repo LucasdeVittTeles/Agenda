@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Agenda.Application.Services.Users;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Agenda.Application
 {
@@ -7,6 +8,8 @@ namespace Agenda.Application
 
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            services.AddScoped<ICreateUserService, CreateUserService>();
+
             return services;
         }
 
