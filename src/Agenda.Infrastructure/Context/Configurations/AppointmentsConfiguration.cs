@@ -11,9 +11,12 @@ namespace Agenda.Infrastructure.Context.Configurations
 
             builder.ToTable("appointments");
 
-            builder.Property(x => x.Business_Id)
-                .IsRequired();
+            builder.Property(x => x.Id)
+                .HasColumnName("id");
 
+            builder.Property(x => x.Business_Id)
+                .HasColumnName("business_id")
+                .IsRequired();
 
             builder.HasOne(x => x.Business)
                 .WithMany(x => x.Appointments)
@@ -23,6 +26,7 @@ namespace Agenda.Infrastructure.Context.Configurations
             // Client User
 
             builder.Property(x => x.Client_User_Id)
+                .HasColumnName("client_user_id")
                 .IsRequired();
 
             builder.HasOne(x => x.ClientUser)
@@ -33,6 +37,7 @@ namespace Agenda.Infrastructure.Context.Configurations
             // Service Staff
 
             builder.Property(x => x.Service_Staff_Id)
+                .HasColumnName("service_staff_id")
                 .IsRequired();
 
             builder.HasOne(x => x.ServiceStaff)
@@ -43,14 +48,17 @@ namespace Agenda.Infrastructure.Context.Configurations
             // Date/Time
 
             builder.Property(x => x.Start_Datetime)
+                .HasColumnName("start_datetime")
                 .IsRequired();
 
             builder.Property(x => x.End_Datetime)
+                .HasColumnName("end_datetime")
                 .IsRequired();
 
             // Status
 
             builder.Property(x => x.Status)
+                .HasColumnName("status")
                 .HasConversion<string>()
                 .HasMaxLength(20)
                 .IsRequired();
@@ -58,14 +66,17 @@ namespace Agenda.Infrastructure.Context.Configurations
             // Notes
 
             builder.Property(x => x.Notes)
+                .HasColumnName("notes")
                 .IsRequired(false);
 
             // Audit
 
             builder.Property(x => x.Created_At)
+                .HasColumnName("created_at")
                 .IsRequired();
 
             builder.Property(x => x.Updated_At)
+                .HasColumnName("updated_at")
                 .IsRequired();
 
         }

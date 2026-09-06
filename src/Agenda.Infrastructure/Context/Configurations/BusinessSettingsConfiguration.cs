@@ -12,43 +12,56 @@ namespace Agenda.Infrastructure.Context.Configurations
 
             builder.ToTable("business_settings");
 
+            builder.Property(x => x.Id)
+                .HasColumnName("id");
+
             builder.Property(x => x.Business_Id)
-                    .IsRequired();
+                .HasColumnName("business_id")
+                .IsRequired();
 
             builder.HasIndex(x => x.Business_Id)
-                    .IsUnique();
+                .IsUnique();
 
             builder.HasOne(x => x.Business)
-                     .WithOne(x => x.BusinessSettings)
-                     .HasForeignKey<BusinessSettings>(x => x.Business_Id)
-                     .IsRequired();
+                .WithOne(x => x.BusinessSettings)
+                .HasForeignKey<BusinessSettings>(x => x.Business_Id)
+                .IsRequired();
 
             builder.Property(x => x.Allow_Online_Booking)
+                .HasColumnName("allow_online_booking")
                 .IsRequired();
 
             builder.Property(x => x.Max_Daily_Appointments)
-               .IsRequired();
+                .HasColumnName("max_daily_appointments")
+                .IsRequired();
 
             builder.Property(x => x.Appointment_Approval_Required)
+                .HasColumnName("appointment_approval_required")
                 .IsRequired();
 
             builder.Property(x => x.Appointment_Interval_Minutes)
+                .HasColumnName("appointment_interval_minutes")
                 .IsRequired();
 
             builder.Property(x => x.Cancelation_Limit_Hours)
-               .IsRequired();
+                .HasColumnName("cancelation_limit_hours")
+                .IsRequired();
 
             builder.Property(x => x.Working_Days)
-               .HasColumnType("jsonb")
-               .IsRequired();
+                .HasColumnName("working_days")
+                .HasColumnType("jsonb")
+                .IsRequired();
 
             builder.Property(x => x.Theme_Color)
-             .IsRequired(false);
+                .HasColumnName("theme_color")
+                .IsRequired(false);
 
             builder.Property(x => x.Created_At)
+                .HasColumnName("created_at")
                 .IsRequired();
 
             builder.Property(x => x.Updated_At)
+                .HasColumnName("updated_at")
                 .IsRequired();
 
         }
