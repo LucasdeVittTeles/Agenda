@@ -27,6 +27,8 @@ namespace Agenda.Identity
 
                 RequireClientSecret = false,
 
+                AllowOfflineAccess = true,
+
                 RedirectUris =
                 {
                     "http://localhost:5173/callback"
