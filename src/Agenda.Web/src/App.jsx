@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Callback from "./auth/Callback";
 import { login } from "./auth/authService";
+import { useEffect, useState } from "react";
+import { getUser } from "./auth/authService";
 
 function Login() {
   return (
@@ -13,7 +15,21 @@ function Login() {
 }
 
 function Home() {
-  return <h1>Agenda</h1>;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getUser().then(setUser);
+  }, []);
+
+  return (
+    <div>
+      <h1>Agenda</h1>
+
+      <pre>
+        {JSON.stringify(user, null, 2)}
+      </pre>
+    </div>
+  );
 }
 
 function App() {

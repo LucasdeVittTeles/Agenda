@@ -1,3 +1,4 @@
+using Agenda.Application.Services.Password;
 using Agenda.Identity;
 using Agenda.Identity.Services;
 using Agenda.Infrastructure.Context;
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     ));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+
+builder.Services.AddControllersWithViews();
 
 builder.Services
     .AddIdentityServer()
@@ -20,6 +24,10 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 app.UseIdentityServer();
+
+app.MapDefaultControllerRoute();
 
 app.Run();
