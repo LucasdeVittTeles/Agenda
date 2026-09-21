@@ -1,13 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+
 import Callback from "./auth/Callback";
 import { login } from "./auth/authService";
-import { useEffect, useState } from "react";
-import { getUser } from "./auth/authService";
+import { getUsers } from "./api/api";
 
 function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <button className="btn btn-primary" onClick={login}>
+      <button
+        className="btn btn-primary"
+        onClick={login}
+      >
         Entrar
       </button>
     </div>
@@ -15,21 +19,22 @@ function Login() {
 }
 
 function Home() {
-  const [user, setUser] = useState(null);
+  console.log("HOME FOI MONTADO");
 
   useEffect(() => {
-    getUser().then(setUser);
+    console.log("USE EFFECT EXECUTOU");
+
+    getUsers()
+      .then((data) => {
+        console.log("RESPOSTA DA API:", data);
+      })
+      .catch((error) => {
+        console.error("ERRO DA API:", error);
+      });
+
   }, []);
 
-  return (
-    <div>
-      <h1>Agenda</h1>
-
-      <pre>
-        {JSON.stringify(user, null, 2)}
-      </pre>
-    </div>
-  );
+  return <h1>Agenda</h1>;
 }
 
 function App() {

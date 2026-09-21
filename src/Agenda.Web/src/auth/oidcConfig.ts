@@ -7,4 +7,4 @@ export const userManager = new UserManager({
     post_logout_redirect_uri: "http://localhost:5173",
     response_type: "code",
     scope: "openid profile agenda_api"
-});''
+});

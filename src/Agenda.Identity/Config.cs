@@ -14,6 +14,11 @@ namespace Agenda.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             [
                 new ApiScope("agenda_api", "Agenda API")
+                {
+
+                     UserClaims = { "role", "business_id" }
+
+                }
             ];
 
         public static IEnumerable<Client> Clients =>

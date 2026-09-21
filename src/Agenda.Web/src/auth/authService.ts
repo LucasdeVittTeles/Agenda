@@ -1,3 +1,4 @@
+import { User } from "oidc-client-ts";
 import { userManager } from "./oidcConfig";
 
 export function login() {
@@ -8,6 +9,6 @@ export function logout() {
     return userManager.signoutRedirect();
 }
 
-export function getUser() {
+export function getUser(): Promise<User | null> {
     return userManager.getUser();
 }
