@@ -1,10 +1,12 @@
-using Agenda.Infrastructure.Context;
-using Agenda.Application;
-using Microsoft.EntityFrameworkCore;
-using Agenda.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Agenda.Application.Interfaces.Services;
 using Agenda.API.Services;
+using Agenda.Application;
+using Npgsql;
+using Agenda.Application.Interfaces.Services;
+using Agenda.Infrastructure;
+using Agenda.Infrastructure.Context;
+using Agenda.Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +15,17 @@ builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+
+dataSourceBuilder.EnableDynamicJson();
+
+var dataSource = dataSourceBuilder.Build();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+    options.UseNpgsql(dataSource));
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -24,6 +33,20 @@ builder.Services
     {
         options.Authority = "https://localhost:7230";
         options.TokenValidationParameters.ValidateAudience = false;
+
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("========== JWT ERROR ==========");
+                Console.WriteLine(context.Exception.Message);
+                Console.WriteLine(context.Exception);
+                Console.WriteLine("===============================");
+
+                return Task.CompletedTask;
+            }
+        };
+
     });
 
 builder.Services.AddCors(options =>
@@ -36,29 +59,6 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
-
-builder.Services.AddScoped<ICurrentUser, CurrentUserService>();
-
-builder.Services.AddHttpContextAccessor();
-
-builder.Services.AddAuthorization();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseCors("React");
-
-app.UseAuthentication();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -77,6 +77,39 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Owner", "Staff");
     });
 });
+
+builder.Services.AddScoped<ICurrentUser, CurrentUserService>();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider
+        .GetRequiredService<DbInitializer>();
+
+    await initializer.SeedAsync();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseCors("React");
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 

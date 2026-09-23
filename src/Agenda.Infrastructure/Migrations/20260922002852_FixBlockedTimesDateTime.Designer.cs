@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Agenda.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Agenda.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260922002852_FixBlockedTimesDateTime")]
+    partial class FixBlockedTimesDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,16 +97,16 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<TimeSpan>("End_Time")
-                        .HasColumnType("interval")
+                    b.Property<DateTime>("End_Time")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_time");
 
                     b.Property<bool>("Is_Active")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
-                    b.Property<TimeSpan>("Start_Time")
-                        .HasColumnType("interval")
+                    b.Property<DateTime>("Start_Time")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_time");
 
                     b.Property<DateTime>("Updated_At")
@@ -114,10 +117,8 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
-                    b.Property<string>("Week_Day")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
+                    b.Property<int>("Week_Day")
+                        .HasColumnType("integer")
                         .HasColumnName("week_day");
 
                     b.HasKey("Id");

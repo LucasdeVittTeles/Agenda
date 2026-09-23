@@ -23,3 +23,27 @@ export async function getUsers() {
 
     return response.json();
 }
+
+
+export async function getServices() {
+
+    const user = await getUser();
+
+    if (!user?.access_token) {
+        throw new Error("Usuário não autenticado.");
+    }
+
+    const response = await fetch(`${API_URL}/api/services`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${user.access_token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status}`);
+    }
+
+    return response.json();
+
+}

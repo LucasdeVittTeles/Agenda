@@ -3,7 +3,8 @@ import { useEffect } from "react";
 
 import Callback from "./auth/Callback";
 import { login } from "./auth/authService";
-import { getUsers } from "./api/api";
+import { getServices } from "./api/api";
+import ServicesPage from "./pages/ServicesPage/ServicesPage";
 
 function Login() {
   return (
@@ -19,22 +20,7 @@ function Login() {
 }
 
 function Home() {
-  console.log("HOME FOI MONTADO");
-
-  useEffect(() => {
-    console.log("USE EFFECT EXECUTOU");
-
-    getUsers()
-      .then((data) => {
-        console.log("RESPOSTA DA API:", data);
-      })
-      .catch((error) => {
-        console.error("ERRO DA API:", error);
-      });
-
-  }, []);
-
-  return <h1>Agenda</h1>;
+  return ServicesPage();
 }
 
 function App() {

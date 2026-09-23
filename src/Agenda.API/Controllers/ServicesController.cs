@@ -1,5 +1,4 @@
 ﻿using Agenda.Application.DTOs.Services;
-using Agenda.Application.Interfaces.Services;
 using Agenda.Application.Services.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

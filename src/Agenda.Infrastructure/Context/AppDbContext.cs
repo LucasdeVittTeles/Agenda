@@ -11,7 +11,7 @@ namespace Agenda.Infrastructure.Context
         }
 
         public DbSet<Users> Users => Set<Users>();
-        public DbSet<Business> Businesses => Set<Business>();
+        public DbSet<Business> Business => Set<Business>();
         public DbSet<BusinessSettings> BusinessSettings => Set<BusinessSettings>();
         public DbSet<Services> Services => Set<Services>();
         public DbSet<ServiceStaff> ServiceStaff => Set<ServiceStaff>();
