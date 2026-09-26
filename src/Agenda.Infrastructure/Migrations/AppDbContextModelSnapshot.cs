@@ -94,16 +94,16 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<DateTime>("End_Time")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<TimeSpan>("End_Time")
+                        .HasColumnType("interval")
                         .HasColumnName("end_time");
 
                     b.Property<bool>("Is_Active")
                         .HasColumnType("boolean")
                         .HasColumnName("is_active");
 
-                    b.Property<DateTime>("Start_Time")
-                        .HasColumnType("timestamp with time zone")
+                    b.Property<TimeSpan>("Start_Time")
+                        .HasColumnType("interval")
                         .HasColumnName("start_time");
 
                     b.Property<DateTime>("Updated_At")
@@ -114,8 +114,10 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
-                    b.Property<int>("Week_Day")
-                        .HasColumnType("integer")
+                    b.Property<string>("Week_Day")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("week_day");
 
                     b.HasKey("Id");
@@ -138,8 +140,8 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
 
-                    b.Property<TimeSpan>("End_Datetime")
-                        .HasColumnType("interval")
+                    b.Property<DateTime>("End_Datetime")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("end_datetime");
 
                     b.Property<string>("Reason")
@@ -147,8 +149,8 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("reason");
 
-                    b.Property<TimeSpan>("Start_Datetime")
-                        .HasColumnType("interval")
+                    b.Property<DateTime>("Start_Datetime")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_datetime");
 
                     b.Property<DateTime>("Updated_At")

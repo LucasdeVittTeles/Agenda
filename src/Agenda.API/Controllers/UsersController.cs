@@ -1,6 +1,9 @@
 ﻿using Agenda.Application.DTOs.Users;
+using Agenda.Application.Interfaces.Services;
 using Agenda.Application.Services.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Agenda.API.Controllers
 {
@@ -10,10 +13,36 @@ namespace Agenda.API.Controllers
     {
 
         private readonly ICreateUserService _createUserService;
+        private readonly ICurrentUser _currentUser;
 
-        public UsersController(ICreateUserService createUserService)
+        public UsersController(ICreateUserService createUserService, ICurrentUser currentUser)
         {
             _createUserService = createUserService;
+            _currentUser = currentUser;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(new
+            {
+                currentUserRole = _currentUser.Role,
+
+                directRole = User.FindFirstValue(ClaimTypes.Role),
+
+                jwtRole = User.FindFirstValue("role"),
+
+                isInRole = User.IsInRole("Staff")
+            });
+        }
+
+
+        [Authorize(Policy = "StaffOnly")]
+        [HttpGet("staff")]
+        public IActionResult Staff()
+        {
+            return Ok("Você é Staff.");
         }
 
         [HttpPost]

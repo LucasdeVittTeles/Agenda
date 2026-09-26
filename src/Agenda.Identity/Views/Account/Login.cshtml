@@ -1,0 +1,41 @@
+﻿@model Agenda.Identity.Models.LoginInputModel
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Agenda</title>
+</head>
+<body>
+
+    <h1>Entrar</h1>
+
+    <form asp-action="Login" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div>
+            <label asp-for="Email"></label>
+            <input asp-for="Email" type="email" name="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+
+        <div>
+            <label asp-for="Password"></label>
+            <input asp-for="Password" type="password" name="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <button type="submit">
+            Entrar
+        </button>
+
+        <div asp-validation-summary="All"></div>
+
+    </form>
+
+</body>
+</html>

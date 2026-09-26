@@ -1,6 +1,7 @@
 ﻿using Agenda.Application.DTOs.Users;
 using Agenda.Application.Exceptions;
 using Agenda.Application.Interfaces.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace Agenda.Application.Services.Users;
 
@@ -8,10 +9,12 @@ public class CreateUserService : ICreateUserService
 {
 
     private IUserRepository _userRepository;
+    private readonly IPasswordHasher<Domain.Entities.Users> _passwordService;
 
-    public CreateUserService(IUserRepository userRepository)
+    public CreateUserService(IUserRepository userRepository, IPasswordHasher<Domain.Entities.Users> passwordService)
     {
         _userRepository = userRepository;
+        _passwordService = passwordService;
     }
 
     public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
@@ -29,7 +32,7 @@ public class CreateUserService : ICreateUserService
             BusinessId = request.BusinessId,
             Name = request.Name,
             Email = request.Email,
-            PasswordHash = request.Password, // temporário
+            PasswordHash = _passwordService.HashPassword(null!, request.Password), // temporário
             Role = request.Role,
             StaffType = request.StaffType,
             Phone = request.Phone,

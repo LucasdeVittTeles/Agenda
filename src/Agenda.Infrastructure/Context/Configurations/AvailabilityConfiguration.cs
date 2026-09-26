@@ -25,7 +25,9 @@ namespace Agenda.Infrastructure.Context.Configurations
                 .IsRequired();
 
             builder.Property(x => x.Week_Day)
-                .HasColumnName("week_day")
+                . HasColumnName("week_day")
+                .HasConversion<string>()
+                .HasMaxLength(20)
                 .IsRequired();
 
             builder.Property(x => x.Start_Time)
