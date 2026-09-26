@@ -22,12 +22,8 @@ public class DbInitializer
     public async Task SeedAsync()
     {
 
-
-        Console.WriteLine("========== SEED INICIADO ==========");
-
         if (await _context.Business.AnyAsync())
         {
-            Console.WriteLine("========== SEED IGNORADO: JÁ EXISTEM EMPRESAS ==========");
             return;
         }
 
