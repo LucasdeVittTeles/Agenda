@@ -23,7 +23,7 @@
 
         // Navigation Properties
         public List<Users> Users { get; private set; } = [];
-        public List<Services> Services { get; private set; } = [];
+        public List<BusinessService> Services { get; private set; } = [];
         public List<Appointments> Appointments { get; private set; } = [];
         public BusinessSettings BusinessSettings { get; private set; }
 

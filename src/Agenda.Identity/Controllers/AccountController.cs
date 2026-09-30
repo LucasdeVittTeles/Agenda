@@ -4,6 +4,7 @@ using Agenda.Identity.Services;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Agenda.Identity.Controllers
 {
@@ -34,7 +35,8 @@ namespace Agenda.Identity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model, CancellationToken cancellationToken){
+        public async Task<IActionResult> Login(LoginInputModel model, CancellationToken cancellationToken)
+        {
 
             if (!ModelState.IsValid)
                 return View(model);
@@ -59,6 +61,10 @@ namespace Agenda.Identity.Controllers
             {
                 DisplayName = user.Name
             };
+
+            identityServerUser.AdditionalClaims.Add(
+                new Claim("name", user.Name)
+            );
 
             identityServerUser.AdditionalClaims.Add(new("role", user.Role.ToString()));
 

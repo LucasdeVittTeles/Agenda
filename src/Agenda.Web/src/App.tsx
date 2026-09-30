@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
 
 import Callback from "./auth/Callback";
 import { login } from "./auth/authService";
-import { getServices } from "./api/api";
+
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
+import MainLayout from "./components/layout/MainLayout";
 
 function Login() {
   return (
@@ -19,20 +19,42 @@ function Login() {
   );
 }
 
-function Home() {
-  return ServicesPage();
+function Dashboard() {
+  return <h1>Dashboard</h1>;
 }
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/callback" element={<Callback />} />
+
+        {/* Rotas sem layout */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/callback"
+          element={<Callback />}
+        />
+
+        {/* Rotas do sistema */}
+        <Route element={<MainLayout />}>
+
+          <Route
+            path="/"
+            element={<Dashboard />}
+          />
+
+          <Route
+            path="/services"
+            element={<ServicesPage />}
+          />
+
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );
 }
-
-export default App;

@@ -1,6 +1,6 @@
 ﻿namespace Agenda.Domain.Entities
 {
-    public class Services
+    public class BusinessService
     {
         public int Id { get; set; }
         public int Business_Id { get; set; }
@@ -11,7 +11,7 @@
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get; set; }
         public Business Business { get; private set; }
-        public List<ServiceStaff> ServiceStaffs { get; set; } = new List<ServiceStaff>();
+        public List<BusinessServiceStaff> Staffs { get; set; } = new List<BusinessServiceStaff>();
 
     }
 }

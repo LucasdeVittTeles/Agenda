@@ -1,9 +1,8 @@
-export interface Services 
-{
+export interface Services {
     id: number;
-    business_id: number;
+    businessId: number;
     name: string;
     description: string;
-    default_duration_minutes: number;
-    is_active: boolean;
+    defaultDurationMinutes: number;
+    is_Active: boolean;
 }

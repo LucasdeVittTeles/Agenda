@@ -210,13 +210,13 @@ public class DbInitializer
         await _context.SaveChangesAsync();
 
 
-        var services = new List<Services>
+        var services = new List<BusinessService>
 {
     // =========================
     // BARBEARIA ALPHA
     // =========================
 
-    new Services
+    new BusinessService
     {
         Business_Id = alpha.Id,
         Name = "Corte Masculino",
@@ -227,7 +227,7 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new Services
+    new BusinessService
     {
         Business_Id = alpha.Id,
         Name = "Barba",
@@ -238,7 +238,7 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new Services
+    new BusinessService
     {
         Business_Id = alpha.Id,
         Name = "Corte + Barba",
@@ -253,7 +253,7 @@ public class DbInitializer
     // STUDIO BELLA
     // =========================
 
-    new Services
+    new BusinessService
     {
         Business_Id = bella.Id,
         Name = "Corte Feminino",
@@ -264,7 +264,7 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new Services
+    new BusinessService
     {
         Business_Id = bella.Id,
         Name = "Manicure",
@@ -275,7 +275,7 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new Services
+    new BusinessService
     {
         Business_Id = bella.Id,
         Name = "Design de Sobrancelha",
@@ -298,15 +298,15 @@ public class DbInitializer
         var bellaStaff = users.First(x =>
             x.Email == "staff@bella.com");
 
-        var serviceStaffs = new List<ServiceStaff>
+        var serviceStaffs = new List<BusinessServiceStaff>
 {
     // =========================
     // BARBEARIA ALPHA
     // =========================
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Corte Masculino").Id,
+        Business_Service_Id = services.First(x => x.Name == "Corte Masculino").Id,
         Staff_User_Id = alphaStaff.Id,
         Price = 40.00m,
         Duration_Minutes = 30,
@@ -315,9 +315,9 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Barba").Id,
+        Business_Service_Id = services.First(x => x.Name == "Barba").Id,
         Staff_User_Id = alphaStaff.Id,
         Price = 30.00m,
         Duration_Minutes = 30,
@@ -326,9 +326,9 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Corte + Barba").Id,
+        Business_Service_Id = services.First(x => x.Name == "Corte + Barba").Id,
         Staff_User_Id = alphaStaff.Id,
         Price = 60.00m,
         Duration_Minutes = 60,
@@ -341,9 +341,9 @@ public class DbInitializer
     // STUDIO BELLA
     // =========================
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Corte Feminino").Id,
+        Business_Service_Id = services.First(x => x.Name == "Corte Feminino").Id,
         Staff_User_Id = bellaStaff.Id,
         Price = 80.00m,
         Duration_Minutes = 60,
@@ -352,9 +352,9 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Manicure").Id,
+        Business_Service_Id = services.First(x => x.Name == "Manicure").Id,
         Staff_User_Id = bellaStaff.Id,
         Price = 45.00m,
         Duration_Minutes = 45,
@@ -363,9 +363,9 @@ public class DbInitializer
         Updated_At = now
     },
 
-    new ServiceStaff
+    new BusinessServiceStaff
     {
-        Service_Id = services.First(x => x.Name == "Design de Sobrancelha").Id,
+        Business_Service_Id = services.First(x => x.Name == "Design de Sobrancelha").Id,
         Staff_User_Id = bellaStaff.Id,
         Price = 35.00m,
         Duration_Minutes = 30,
@@ -375,7 +375,7 @@ public class DbInitializer
     }
 };
 
-        _context.ServiceStaff.AddRange(serviceStaffs);
+        _context.BusinessServiceStaffs.AddRange(serviceStaffs);
 
         await _context.SaveChangesAsync();
 
@@ -580,16 +580,16 @@ public class DbInitializer
 
 
         var alphaCorte = serviceStaffs.First(x =>
-            x.Service_Id == services.First(s => s.Name == "Corte Masculino").Id);
+            x.Business_Service_Id == services.First(s => s.Name == "Corte Masculino").Id);
 
         var alphaBarba = serviceStaffs.First(x =>
-            x.Service_Id == services.First(s => s.Name == "Barba").Id);
+            x.Business_Service_Id == services.First(s => s.Name == "Barba").Id);
 
         var bellaCorte = serviceStaffs.First(x =>
-            x.Service_Id == services.First(s => s.Name == "Corte Feminino").Id);
+            x.Business_Service_Id == services.First(s => s.Name == "Corte Feminino").Id);
 
         var bellaManicure = serviceStaffs.First(x =>
-            x.Service_Id == services.First(s => s.Name == "Manicure").Id);
+            x.Business_Service_Id == services.First(s => s.Name == "Manicure").Id);
 
 
         var appointments = new List<Appointments>
