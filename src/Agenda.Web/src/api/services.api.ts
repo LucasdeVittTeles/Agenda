@@ -50,6 +50,6 @@ export async function updateService(
     return response.data;
 }
 
-export async function deleteService(id: number): Promise<void> {
-    await api.delete(`/services/${id}`);
+export async function deleteService(serviceId: number): Promise<void> {
+    await api.delete(`/services/${serviceId}`);
 }

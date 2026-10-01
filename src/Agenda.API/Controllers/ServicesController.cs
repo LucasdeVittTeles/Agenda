@@ -20,35 +20,47 @@ namespace Agenda.API.Controllers
         }
 
         [HttpGet]
-        public async Task<List<BusinessServiceResponse>> GetList(CancellationToken cancellationToken)
+        public async Task<ActionResult<List<BusinessServiceResponse>>> GetList(CancellationToken cancellationToken)
         {
-            return await _servicesService.GetServicesByBusinessId(cancellationToken);
+            var services = await _servicesService.GetServicesByBusinessId(cancellationToken);
+
+            return Ok(services);
         }
 
-        [HttpGet]
-        public async Task<BusinessServiceResponse> Get(int serviceId, CancellationToken cancellationToken)
+        [HttpGet("{serviceId:int}")]
+        public async Task<ActionResult<BusinessServiceResponse>> Get(int serviceId, CancellationToken cancellationToken)
         {
-            return await _servicesService.GetService(serviceId, cancellationToken);
+            var service = await _servicesService.GetService(serviceId, cancellationToken);
+
+            return Ok(service);
+
         }
 
         [HttpPost]
-        public async Task<BusinessServiceResponse> Create(CreateBusinessServiceDTO createBusinessServiceDTO, CancellationToken cancellationToken)
+        public async Task<ActionResult<BusinessServiceResponse>> Create([FromBody] CreateBusinessServiceDTO createBusinessServiceDTO, CancellationToken cancellationToken)
         {
 
-            return await _servicesService.CreateService(createBusinessServiceDTO, cancellationToken);
+            var service = await _servicesService.CreateService(createBusinessServiceDTO, cancellationToken);
+
+            return CreatedAtAction(nameof(Get), new { serviceId = service.Id }, service);
 
         }
 
-        [HttpPatch]
-        public async Task<BusinessServiceResponse> Update(int serviceId, UpdateBusinessServiceDTO updateBusinessServiceDTO, CancellationToken cancellationToken)
+        [HttpPut("{serviceId:int}")]
+        public async Task<ActionResult<BusinessServiceResponse>> Update(int serviceId, [FromBody] UpdateBusinessServiceDTO updateBusinessServiceDTO, CancellationToken cancellationToken)
         {
-            return await _servicesService.UpdateService(serviceId, updateBusinessServiceDTO, cancellationToken);
+            var service = await _servicesService.UpdateService(serviceId, updateBusinessServiceDTO, cancellationToken);
+
+            return Ok(service);
+
         }
 
-        [HttpDelete]
-        public async Task Delete(int serviceId, CancellationToken cancellationToken)
+        [HttpDelete("{serviceId:int}")]
+        public async Task<IActionResult> Delete(int serviceId, CancellationToken cancellationToken)
         {
             await _servicesService.DeleteService(serviceId, cancellationToken);
+
+            return NoContent();
         }
 
     }

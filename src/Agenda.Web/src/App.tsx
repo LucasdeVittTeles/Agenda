@@ -5,6 +5,7 @@ import { login } from "./auth/authService";
 
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
 import MainLayout from "./components/layout/MainLayout";
+import FormServicePage from "./pages/ServicesPage/FormServicePage";
 
 function Login() {
   return (
@@ -47,10 +48,8 @@ export default function App() {
             element={<Dashboard />}
           />
 
-          <Route
-            path="/services"
-            element={<ServicesPage />}
-          />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/services/create" element={<FormServicePage />} />
 
         </Route>
 

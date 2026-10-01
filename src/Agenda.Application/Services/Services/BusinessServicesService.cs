@@ -26,7 +26,9 @@ namespace Agenda.Application.Services.Services
                 throw new ArgumentException("serviceId deve ser maior que 0.");
             }
 
-            var businessService = await _businessServiceRepository.GetService(serviceId, cancellationToken);
+            var businessId = _currentUser.BusinessId;
+
+            var businessService = await _businessServiceRepository.GetService(serviceId, businessId, cancellationToken);
 
             if (businessService is null)
                 throw new BusinessServiceNotFoundException(serviceId);
@@ -97,7 +99,12 @@ namespace Agenda.Application.Services.Services
             if (serviceId == 0)
                 throw new ArgumentException("serviceId deve ser maior que 0.");
 
-            var businessService = await _businessServiceRepository.GetService(serviceId, cancellationToken);
+            var businessId = _currentUser.BusinessId;
+
+            if (businessId is null)
+                throw new BusinessNotBeNullException("BusinessId não pode ser nulo");
+
+            var businessService = await _businessServiceRepository.GetService(serviceId, businessId, cancellationToken);
 
             if (businessService is null)
                 throw new BusinessServiceNotFoundException(serviceId);
@@ -125,7 +132,17 @@ namespace Agenda.Application.Services.Services
             if (serviceId == 0)
                 throw new ArgumentException("serviceId deve ser maior que 0.");
 
-            await _businessServiceRepository.DeleteService(serviceId, cancellationToken);
+            var businessId = _currentUser.BusinessId;
+
+            if (businessId is null)
+                throw new BusinessNotBeNullException("BusinessId não pode ser nulo");
+
+            var businessService = await _businessServiceRepository.GetService(serviceId, businessId.Value, cancellationToken);
+
+            if (businessService is null)
+                throw new BusinessServiceNotFoundException(serviceId);
+
+            await _businessServiceRepository.DeleteService(businessService, cancellationToken);
 
         }
 

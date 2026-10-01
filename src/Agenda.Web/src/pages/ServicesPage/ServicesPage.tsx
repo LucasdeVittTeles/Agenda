@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { getServices } from "../../api/services.api";
+import { deleteService, getServices } from "../../api/services.api";
 import { Services } from "../../models/Services/Services";
+import { useNavigate } from "react-router-dom";
 
 export default function ServicesPage() {
 
+    const navigate = useNavigate();
     const [services, setServices] = useState<Services[]>([]);
 
     useEffect(() => {
@@ -16,10 +18,26 @@ export default function ServicesPage() {
             });
     }, []);
 
+    async function handleDelete(serviceId: number) {
+        try {
+
+            await deleteService(serviceId);
+
+            setServices(currentServices =>
+                currentServices.filter(service => service.id !== serviceId)
+            );
+        } catch (error) {
+            console.error("Erro ao excluir serviço:", error);
+        }
+    }
+
     return (
         <div>
 
-            <h1 className="text-5xl mb-4">Serviços</h1>
+            <div className="flex space-x-400">
+                <h1 className="text-5xl mb-4">Serviços</h1>
+                <button className="btn btn-primary" onClick={() => navigate("/services/create")}>Adiconar</button>
+            </div>
 
             <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
                 <table className="table">
@@ -59,7 +77,7 @@ export default function ServicesPage() {
                                             Editar
                                         </button>
 
-                                        <button className="btn btn-sm btn-error ml-2">
+                                        <button onClick={() => handleDelete(service.id)} className="btn btn-sm btn-error ml-2">
                                             Excluir
                                         </button>
                                     </td>

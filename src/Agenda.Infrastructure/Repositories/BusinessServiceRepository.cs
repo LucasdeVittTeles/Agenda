@@ -15,10 +15,10 @@ namespace Agenda.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<BusinessService?> GetService(int serviceId, CancellationToken cancellationToken = default)
+        public async Task<BusinessService?> GetService(int serviceId, int? businessId, CancellationToken cancellationToken = default)
         {
 
-            var businessService = await _context.Services.FindAsync([serviceId], cancellationToken);
+            var businessService = await _context.Services.FirstOrDefaultAsync(service => service.Id == serviceId && service.Business_Id == businessId, cancellationToken);
 
             return businessService;
 
@@ -47,13 +47,8 @@ namespace Agenda.Infrastructure.Repositories
         }
 
 
-        public async Task DeleteService(int serviceId, CancellationToken cancellationToken = default)
+        public async Task DeleteService(BusinessService businessService, CancellationToken cancellationToken = default)
         {
-
-            var businessService = await _context.Services.FindAsync(serviceId);
-
-            if (businessService is null)
-                return;
 
             _context.Services.Remove(businessService);
 

@@ -1,5 +1,6 @@
 using Agenda.API.Services;
 using Agenda.Application;
+using Agenda.API.ExceptionHandlers;
 using Npgsql;
 using Agenda.Application.Interfaces.Services;
 using Agenda.Infrastructure;
@@ -38,11 +39,6 @@ builder.Services
         {
             OnAuthenticationFailed = context =>
             {
-                Console.WriteLine("========== JWT ERROR ==========");
-                Console.WriteLine(context.Exception.Message);
-                Console.WriteLine(context.Exception);
-                Console.WriteLine("===============================");
-
                 return Task.CompletedTask;
             }
         };
@@ -78,6 +74,9 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddScoped<ICurrentUser, CurrentUserService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -88,6 +87,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {
