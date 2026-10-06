@@ -50,6 +50,7 @@ export default function App() {
 
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/services/create" element={<FormServicePage />} />
+          <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
 
         </Route>
 

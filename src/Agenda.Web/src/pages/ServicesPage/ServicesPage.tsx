@@ -72,8 +72,7 @@ export default function ServicesPage() {
                                     </td>
 
                                     <td>
-                                        <button className="btn btn-sm btn-primary">
-
+                                        <button className="btn btn-sm btn-primary" onClick={() => navigate(`/services/${service.id}/edit`)}>
                                             Editar
                                         </button>
 

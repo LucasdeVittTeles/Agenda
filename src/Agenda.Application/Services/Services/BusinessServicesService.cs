@@ -75,7 +75,7 @@ namespace Agenda.Application.Services.Services
                 Name = createBusinessServiceDTO.Name,
                 Description = createBusinessServiceDTO.Description,
                 Default_Duration_Minutes = createBusinessServiceDTO.DefaultDurationMinutes,
-                Is_Active = createBusinessServiceDTO.Is_Active,
+                Is_Active = createBusinessServiceDTO.IsActive,
                 Business_Id = businessId.Value,
                 Created_At = DateTime.UtcNow,
                 Updated_At = DateTime.UtcNow,
@@ -112,7 +112,7 @@ namespace Agenda.Application.Services.Services
             businessService.Name = updateBusinessServiceDTO.Name;
             businessService.Description = updateBusinessServiceDTO.Description;
             businessService.Default_Duration_Minutes = updateBusinessServiceDTO.DefaultDurationMinutes;
-            businessService.Is_Active = updateBusinessServiceDTO.Is_Active;
+            businessService.Is_Active = updateBusinessServiceDTO.IsActive;
             businessService.Updated_At = DateTime.UtcNow;
 
             var updatedBusinessService = await _businessServiceRepository.UpdateService(businessService, cancellationToken);
