@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createBusinessService, getService, updateBusinessService } from "../../api/services.api";
 import { CreateBusinessServiceDTO } from "../../models/Services/CreateBusinessServiceDTO";
+import { toast } from "sonner";
+import { getApiErrorMessage } from "../../utils/apiError";
 
 export default function FormServicePage() {
 
@@ -16,6 +18,11 @@ export default function FormServicePage() {
     const [defaultDurationMinutes, setDefaultDurationMinutes] = useState(0);
     const [isActive, setIsActive] = useState(true);
 
+    const [errors, setErrors] = useState<{
+        name?: string;
+        description?: string;
+        defaultDurationMinutes?: string;
+    }>({});
 
     useEffect(() => {
         if (!editingMode)
@@ -30,9 +37,30 @@ export default function FormServicePage() {
             })
     }, [serviceId, editingMode])
 
+    function validateForm() {
+        const newErrors: typeof errors = {};
+
+        if (!name.trim())
+            newErrors.name = "Nome é obrigatório.";
+
+        if (!description.trim())
+            newErrors.description = "Descrição é obrigatória.";
+
+        if (defaultDurationMinutes <= 0)
+            newErrors.defaultDurationMinutes =
+                "A duração deve ser maior que zero.";
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    }
+
     async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
 
         event.preventDefault();
+
+        if (!validateForm())
+            return;
 
         const request: CreateBusinessServiceDTO = {
             name,
@@ -41,14 +69,22 @@ export default function FormServicePage() {
             isActive,
         };
 
-        if (editingMode) {
-            await updateBusinessService(Number(serviceId), request);
-        } else {
-            await createBusinessService(request);
+
+        try {
+
+            if (editingMode) {
+                await updateBusinessService(Number(serviceId), request);
+            } else {
+                await createBusinessService(request);
+            }
+
+            toast.success(editingMode ? "Serviço editado com sucesso!" : "Serviço criado com sucesso!");
+
+            navigate("/services");
+
+        } catch (error) {
+            toast.error(getApiErrorMessage(error));
         }
-
-        navigate("/services");
-
     }
 
     return (
@@ -64,16 +100,41 @@ export default function FormServicePage() {
                         <div className="flex flex-col gap-4">
 
                             <label className="floating-label">
-                                <input type="text" className="input" placeholder="Digite o nome" value={name} onChange={(event => setName(event.target.value))} />
+                                <input type="text"
+                                    className={`input ${errors.name ? "input-error" : ""}`}
+                                    placeholder="Digite o nome"
+                                    value={name}
+                                    onChange={(event => setName(event.target.value))}
+                                />
                                 <span>Nome</span>
                             </label>
+
+                            {errors.name && (
+                                <p className="text-error text-sm">
+                                    {errors.name}
+                                </p>
+                            )}
+
                             <label className="floating-label">
-                                <textarea placeholder="Digite uma descrição" className="textarea" value={description} onChange={(event => setDescription(event.target.value))} />
+                                <textarea placeholder="Digite uma descrição" className={`textarea ${errors.description ? "textarea-error" : ""}`} value={description} onChange={(event => setDescription(event.target.value))} />
                                 <span>Descrição</span>
                             </label>
-                            <label className="input">
-                                <input type="text" placeholder="Digite a duração em minutos" value={defaultDurationMinutes} onChange={(event => setDefaultDurationMinutes(Number(event.target.value)))} />
+
+                            {errors.description && (
+                                <p className="text-error text-sm">
+                                    {errors.description}
+                                </p>
+                            )}
+
+                            <label className="floating-label">
+                                <input type="text" className={`input ${errors.defaultDurationMinutes ? "input-error" : ""}`} placeholder="Digite a duração em minutos" value={defaultDurationMinutes} onChange={(event => setDefaultDurationMinutes(Number(event.target.value)))} />
                             </label>
+
+                            {errors.defaultDurationMinutes && (
+                                <p className="text-error text-sm">
+                                    {errors.defaultDurationMinutes}
+                                </p>
+                            )}
 
                             <div className="flex gap-2">
 

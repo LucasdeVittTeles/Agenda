@@ -1,0 +1,208 @@
+﻿
+:root {
+    --primary: #2563EB;
+    --secondary: #4F46E5;
+    --text: #0F172A;
+    --muted: #64748B;
+    --background: #F8FAFC;
+    --border: #CBD5E1;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--background);
+}
+
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.brand-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px;
+    color: white;
+    background: linear-gradient( 135deg, #1D4ED8 0%, var(--primary) 55%, var(--secondary) 100% );
+}
+
+.brand-content {
+    max-width: 460px;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 30px;
+    font-weight: 750;
+    margin-bottom: 60px;
+}
+
+.brand-icon {
+    font-size: 38px;
+}
+
+.brand-content h1 {
+    font-size: clamp(36px, 4vw, 58px);
+    line-height: 1.12;
+    letter-spacing: -1.5px;
+    margin: 0 0 24px;
+}
+
+.brand-content p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #DBEAFE;
+}
+
+.benefits {
+    list-style: none;
+    padding: 0;
+    margin-top: 44px;
+}
+
+    .benefits li {
+        margin-bottom: 18px;
+        font-size: 16px;
+    }
+
+.form-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+    background: white;
+}
+
+.form-content {
+    width: 100%;
+    max-width: 420px;
+}
+
+    .form-content h2 {
+        margin: 0 0 10px;
+        font-size: 32px;
+        color: var(--text);
+    }
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 36px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+    .form-group label {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px #DBEAFE;
+        }
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+    .login-button:hover {
+        background: #1D4ED8;
+    }
+
+.register-text {
+    text-align: center;
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+    .register-text span {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+.field-error {
+    color: #DC2626;
+    font-size: 13px;
+}
+
+.validation-summary {
+    color: #B91C1C;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+    .validation-summary:empty {
+        display: none;
+    }
+
+.input-validation-error {
+    border-color: #DC2626 !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-panel {
+        padding: 36px 24px;
+    }
+
+    .brand-logo {
+        margin-bottom: 20px;
+    }
+
+    .brand-content h1 {
+        font-size: 30px;
+    }
+
+    .brand-content p {
+        font-size: 15px;
+    }
+
+    .benefits {
+        display: none;
+    }
+
+    .form-panel {
+        padding: 48px 24px;
+    }
+}

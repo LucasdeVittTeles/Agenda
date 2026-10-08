@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { deleteService, getServices } from "../../api/services.api";
 import { Services } from "../../models/Services/Services";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function ServicesPage() {
 
@@ -26,8 +27,11 @@ export default function ServicesPage() {
             setServices(currentServices =>
                 currentServices.filter(service => service.id !== serviceId)
             );
+
+            toast.success("Serviço excluído com sucesso!");
+
         } catch (error) {
-            console.error("Erro ao excluir serviço:", error);
+            toast.error("Não foi possível excluir o serviço.");
         }
     }
 

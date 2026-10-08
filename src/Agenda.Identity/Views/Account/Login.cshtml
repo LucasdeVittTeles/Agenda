@@ -5,37 +5,84 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - Agenda</title>
+    <title>Entrar | Agenda</title>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 </head>
 <body>
+    <main class="login-container">
 
-    <h1>Entrar</h1>
+        <section class="brand-panel">
+            <div class="brand-content">
+                <div class="brand-logo">
+                    <span class="brand-icon">▦</span>
+                    <span>agenda.</span>
+                </div>
 
-    <form asp-action="Login" method="post">
+                <h1>Seu tempo,<br />melhor organizado.</h1>
 
-        @Html.AntiForgeryToken()
+                <p>
+                    Gerencie seus serviços, clientes e
+                    agendamentos em um só lugar.
+                </p>
 
-        <input type="hidden" asp-for="ReturnUrl" />
+                <ul class="benefits">
+                    <li>✓ Mais produtividade</li>
+                    <li>✓ Agenda organizada</li>
+                    <li>✓ Clientes mais satisfeitos</li>
+                </ul>
+            </div>
+        </section>
 
-        <div>
-            <label asp-for="Email"></label>
-            <input asp-for="Email" type="email" name="Email" />
-            <span asp-validation-for="Email"></span>
-        </div>
+        <section class="form-panel">
+            <div class="form-content">
+                <h2>Bem-vindo de volta</h2>
+                <p class="subtitle">
+                    Entre na sua conta para continuar.
+                </p>
 
-        <div>
-            <label asp-for="Password"></label>
-            <input asp-for="Password" type="password" name="Password" />
-            <span asp-validation-for="Password"></span>
-        </div>
+                <form asp-controller="Account"
+                      asp-action="Login"
+                      method="post">
 
-        <button type="submit">
-            Entrar
-        </button>
+                    @Html.AntiForgeryToken()
 
-        <div asp-validation-summary="All"></div>
+                    <input type="hidden" asp-for="ReturnUrl" />
 
-    </form>
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary"></div>
 
+                    <div class="form-group">
+                        <label asp-for="Email">E-mail</label>
+                        <input asp-for="Email"
+                               type="email"
+                               placeholder="seu@email.com"
+                               autocomplete="username" />
+                        <span asp-validation-for="Email"
+                              class="field-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password">Senha</label>
+                        <input asp-for="Password"
+                               type="password"
+                               placeholder="Digite sua senha"
+                               autocomplete="current-password" />
+                        <span asp-validation-for="Password"
+                              class="field-error"></span>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        Entrar
+                    </button>
+                </form>
+
+                <p class="register-text">
+                    Não tem uma conta?
+                    <span>Cadastro em breve</span>
+                </p>
+            </div>
+        </section>
+
+    </main>
 </body>
 </html>

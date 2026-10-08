@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Callback from "./auth/Callback";
 import { login } from "./auth/authService";
 
+import { Toaster } from "sonner";
+
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
 import MainLayout from "./components/layout/MainLayout";
 import FormServicePage from "./pages/ServicesPage/FormServicePage";
@@ -26,35 +28,40 @@ function Dashboard() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
 
-        {/* Rotas sem layout */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+    <>
+      <Toaster richColors position="top-right" />
+      <BrowserRouter>
+        <Routes>
 
-        <Route
-          path="/callback"
-          element={<Callback />}
-        />
-
-        {/* Rotas do sistema */}
-        <Route element={<MainLayout />}>
-
+          {/* Rotas sem layout */}
           <Route
-            path="/"
-            element={<Dashboard />}
+            path="/login"
+            element={<Login />}
           />
 
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/services/create" element={<FormServicePage />} />
-          <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
+          <Route
+            path="/callback"
+            element={<Callback />}
+          />
 
-        </Route>
+          {/* Rotas do sistema */}
+          <Route element={<MainLayout />}>
 
-      </Routes>
-    </BrowserRouter>
+            <Route
+              path="/"
+              element={<Dashboard />}
+            />
+
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/create" element={<FormServicePage />} />
+            <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
+
+          </Route>
+
+        </Routes>
+      </BrowserRouter>
+
+    </>
   );
 }
