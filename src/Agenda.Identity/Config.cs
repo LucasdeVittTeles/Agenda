@@ -16,7 +16,7 @@ namespace Agenda.Identity
                 new ApiScope("agenda_api", "Agenda API")
                 {
 
-                     UserClaims = { "role", "business_id" }
+                     UserClaims = { "name", "role", "business_id" }
 
                 }
             ];

@@ -13,8 +13,8 @@ namespace Agenda.Infrastructure.Context
         public DbSet<Users> Users => Set<Users>();
         public DbSet<Business> Business => Set<Business>();
         public DbSet<BusinessSettings> BusinessSettings => Set<BusinessSettings>();
-        public DbSet<Services> Services => Set<Services>();
-        public DbSet<ServiceStaff> ServiceStaff => Set<ServiceStaff>();
+        public DbSet<BusinessService> Services { get; set; }
+        public DbSet<BusinessServiceStaff> BusinessServiceStaffs { get; set; }
         public DbSet<Availability> Availabilities => Set<Availability>();
         public DbSet<BlockedTimes> BlockedTimes => Set<BlockedTimes>();
         public DbSet<Appointments> Appointments => Set<Appointments>();

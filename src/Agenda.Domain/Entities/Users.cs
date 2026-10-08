@@ -31,7 +31,7 @@ namespace Agenda.Domain.Entities
         public Business Business { get; private set; }
         public List<Availability> Availabilities { get; private set; } = new List<Availability>();
         public List<BlockedTimes> BlockedTimes { get; set; } = new List<BlockedTimes>();
-        public List<ServiceStaff> ServiceStaff { get; private set; } = new List<ServiceStaff>();
+        public List<BusinessServiceStaff> BusinessServiceStaffs { get; private set; } = new List<BusinessServiceStaff>();
 
     }
 }

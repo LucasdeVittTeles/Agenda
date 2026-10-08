@@ -15,7 +15,7 @@ namespace Agenda.Application
 
             services.AddScoped<IPasswordHasher<Users>, PasswordHasher<Users>>();
 
-            services.AddScoped<IServicesService, ServicesService>();
+            services.AddScoped<IBusinessServicesService, BusinessServicesService>();
 
             return services;
         }

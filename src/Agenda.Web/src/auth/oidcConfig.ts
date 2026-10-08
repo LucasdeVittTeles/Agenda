@@ -6,5 +6,7 @@ export const userManager = new UserManager({
     redirect_uri: "http://localhost:5173/callback",
     post_logout_redirect_uri: "http://localhost:5173",
     response_type: "code",
-    scope: "openid profile agenda_api"
+    scope: "openid profile agenda_api",
+
+    loadUserInfo: true
 });

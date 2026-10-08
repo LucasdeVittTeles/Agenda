@@ -1,7 +1,7 @@
 import { api } from "./client";
 import { Services } from "../models/Services/Services";
-import { CreateServiceRequest } from "../models/Services/CreateServiceRequest";
-import { UpdateServiceRequest } from "../models/Services/UpdateServiceRequest";
+import { CreateBusinessServiceDTO } from "../models/Services/CreateBusinessServiceDTO";
+import { UpdateBusinessServiceDTO } from "../models/Services/UpdateBusinessServiceDTO";
 import { getUser } from "../auth/authService";
 
 const user = await getUser();
@@ -30,26 +30,32 @@ export async function getService(id: number): Promise<Services> {
     return response.data;
 }
 
-export async function createService(
-    request: CreateServiceRequest
-): Promise<Services> {
-    const response = await api.post<Services>("/services", request);
+export async function createBusinessService(request: CreateBusinessServiceDTO): Promise<Services> {
+
+    const response = await api.post<Services>("/services", request, {
+        headers: {
+            'Authorization': `Bearer ${user?.access_token}`
+        }
+    });
 
     return response.data;
 }
 
-export async function updateService(
-    id: number,
-    request: UpdateServiceRequest
-): Promise<Services> {
-    const response = await api.put<Services>(
-        `/services/${id}`,
-        request
-    );
+export async function updateBusinessService(id: number, request: UpdateBusinessServiceDTO): Promise<Services> {
+
+    const response = await api.put<Services>(`/services/${id}`, request, {
+        headers: {
+            'Authorization': `Bearer ${user?.access_token}`
+        }
+    });
 
     return response.data;
 }
 
-export async function deleteService(id: number): Promise<void> {
-    await api.delete(`/services/${id}`);
+export async function deleteService(serviceId: number): Promise<void> {
+    await api.delete(`/services/${serviceId}`, {
+        headers: {
+            'Authorization': `Bearer ${user?.access_token}`
+        }
+    });
 }
