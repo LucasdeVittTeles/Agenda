@@ -8,6 +8,7 @@ import { Toaster } from "sonner";
 import ServicesPage from "./pages/ServicesPage/ServicesPage";
 import MainLayout from "./components/layout/MainLayout";
 import FormServicePage from "./pages/ServicesPage/FormServicePage";
+import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 
 function Login() {
   return (
@@ -40,6 +41,8 @@ export default function App() {
             element={<Login />}
           />
 
+          <Route path="/registration" element={<RegistrationPage />} />
+
           <Route
             path="/callback"
             element={<Callback />}
@@ -48,11 +51,7 @@ export default function App() {
           {/* Rotas do sistema */}
           <Route element={<MainLayout />}>
 
-            <Route
-              path="/"
-              element={<Dashboard />}
-            />
-
+            <Route path="/" element={<Dashboard />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/create" element={<FormServicePage />} />
             <Route path="/services/:serviceId/edit" element={<FormServicePage />} />

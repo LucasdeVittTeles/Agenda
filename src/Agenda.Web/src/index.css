@@ -1,2 +1,42 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+    themes: agenda --default;
+}
+
+@plugin "daisyui/theme" {
+    name: "agenda";
+    default: true;
+    color-scheme: light;
+
+    --color-primary: #2563EB;
+    --color-primary-content: #FFFFFF;
+
+    --color-secondary: #4F46E5;
+    --color-secondary-content: #FFFFFF;
+
+    --color-base-100: #FFFFFF;
+    --color-base-200: #F8FAFC;
+    --color-base-300: #E2E8F0;
+    --color-base-content: #0F172A;
+
+    --color-neutral: #334155;
+    --color-neutral-content: #FFFFFF;
+
+    --color-info: #0284C7;
+    --color-success: #16A34A;
+    --color-warning: #D97706;
+    --color-error: #DC2626;
+}
+
+:root {
+    --background: #F8FAFC;
+    --text-muted: #64748B;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: var(--background);
+}

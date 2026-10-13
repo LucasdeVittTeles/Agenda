@@ -1,5 +1,4 @@
-export interface CreateBusinessServiceDTO
-{
+export interface UpdateBusinessServiceRequest {
     name: string;
     description: string;
     defaultDurationMinutes: number;

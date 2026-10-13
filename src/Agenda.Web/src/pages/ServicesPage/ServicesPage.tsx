@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { deleteService, getServices } from "../../api/services.api";
-import { Services } from "../../models/Services/Services";
+import { Services } from "../../models/BusinessServices/Services";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
