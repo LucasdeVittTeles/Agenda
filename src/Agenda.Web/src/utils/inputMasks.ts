@@ -1,10 +1,8 @@
 
 export type InputMask = "cpf" | "cnpj" | "phone" | "cep";
 
-export function applyInputMask(
-    value: string,
-    mask?: InputMask
-): string {
+export function applyInputMask(value: string, mask?: InputMask): string {
+    
     if (!mask) return value;
 
     const digits = value.replace(/\D/g, "");

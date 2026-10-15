@@ -6,9 +6,10 @@ import { getApiErrorMessage } from "../../utils/apiError";
 import { RegistrationRequest } from "../../models/Registration/RegistrationRequest";
 import Input from "../../components/ui/Input/Input";
 import Button from "../../components/ui/Button/Button";
-import styles from "./RegistrationPage.module.css";
+import { IoIosBusiness } from "react-icons/io";
 import Card from "../../components/ui/Card/Card";
 import { FaSave } from "react-icons/fa";
+import { BsFillPeopleFill } from "react-icons/bs";
 
 export default function RegistrationPage() {
 
@@ -41,6 +42,8 @@ export default function RegistrationPage() {
 
         const newErrors: typeof errors = {};
 
+        //proprietario
+
         if (!name.trim())
             newErrors.name = "Nome é obrigatório.";
 
@@ -48,33 +51,43 @@ export default function RegistrationPage() {
             newErrors.email = "Email é obrigatório.";
 
         if (!phone.trim()) {
-            newErrors.phone = "Contato é obrigatório"
+            newErrors.phone = "Telefone é obrigatório"
         }
 
-        if (!password.trim()) {
-            newErrors.password = "Senha é obrigatório"
-        }
+        if (password.length < 8)
+            newErrors.password = "A senha deve ter pelo menos 8 caracteres.";
+        else if (
+            !/[A-Z]/.test(password) ||
+            !/[a-z]/.test(password) ||
+            !/[0-9]/.test(password)
+        )
+            newErrors.password = "A senha deve conter letras maiúsculas, minúsculas e números.";
 
-        if (password.trim() != confirmPassword.trim()) {
-            newErrors.password = "Senhas não conferem"
-        }
+        if (!confirmPassword)
+            newErrors.confirmPassword = "Confirme sua senha.";
+        else if (password !== confirmPassword)
+            newErrors.confirmPassword = "As senhas não conferem.";
+
+        // negocio
 
         if (!businessName.trim())
-            newErrors.name = "Nome é obrigatório.";
+            newErrors.businessName = "Nome do estabelecimento é obrigatório.";
 
         if (!businessEmail.trim())
-            newErrors.email = "Email é obrigatório.";
+            newErrors.businessEmail = "E-mail comercial é obrigatório.";
 
         if (!businessPhone.trim()) {
-            newErrors.phone = "Contato é obrigatório"
+            newErrors.businessPhone = "Telefone do estabelecimento é obrigatório."
         }
 
         setErrors(newErrors);
 
+
+
         return Object.keys(newErrors).length === 0;
     }
 
-    async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 
         event.preventDefault();
 
@@ -98,7 +111,10 @@ export default function RegistrationPage() {
         try {
 
             await registrationBusiness(request);
+
             navigate("/");
+
+            toast.success("Conta criada com sucesso!");
 
         } catch (error) {
             toast.error(getApiErrorMessage(error));
@@ -134,12 +150,13 @@ export default function RegistrationPage() {
                 {/* Card principal */}
                 <Card className="w-full rounded-2xl shadow-lg">
 
-                    <form className="flex flex-col gap-5">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                         <section className="rounded-xl border border-base-300 p-5">
 
                             <div className="mb-6 flex items-center gap-4">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-primary">
+                                    <IoIosBusiness size={24} />
                                 </div>
 
                                 <div>
@@ -160,9 +177,11 @@ export default function RegistrationPage() {
                                     label="Nome do estabelecimento"
                                     placeholder="Digite o nome do estabelecimento"
                                     required
+                                    value={businessName}
+                                    error={errors.businessName}
+                                    onChange={(event => setBusinessName(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
                                 <Input
@@ -171,19 +190,24 @@ export default function RegistrationPage() {
                                     type="email"
                                     placeholder="contato@seunegocio.com"
                                     required
+                                    value={businessEmail}
+                                    error={errors.businessEmail}
+                                    onChange={(event => setBusinessEmail(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
                                 <Input
                                     id="phone"
                                     label="Telefone"
                                     placeholder="(51) 91234-5678"
+                                    mask="phone"
                                     required
+                                    value={businessPhone}
+                                    error={errors.businessPhone}
+                                    onChange={(event => setBusinessPhone(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
 
@@ -196,6 +220,7 @@ export default function RegistrationPage() {
 
                             <div className="mb-6 flex items-center gap-4">
                                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-primary">
+                                    <BsFillPeopleFill size={24} />
                                 </div>
 
                                 <div>
@@ -217,9 +242,11 @@ export default function RegistrationPage() {
                                     label="Nome completo"
                                     placeholder="Ex: Maria Silva"
                                     required
+                                    value={name}
+                                    error={errors.name}
+                                    onChange={(event => setName(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
                                 <Input
@@ -228,9 +255,24 @@ export default function RegistrationPage() {
                                     type="email"
                                     placeholder="seu@email.com"
                                     required
+                                    value={email}
+                                    error={errors.email}
+                                    onChange={(event => setEmail(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
+                                />
+
+                                <Input
+                                    id="phone"
+                                    label="Telefone"
+                                    placeholder="(51) 91234-5678"
+                                    required
+                                    mask="phone"
+                                    value={phone}
+                                    error={errors.phone}
+                                    onChange={(event => setPhone(event.target.value))}
+                                    maxLength={255}
+                                    disabled={false}
                                 />
 
                                 <Input
@@ -238,10 +280,12 @@ export default function RegistrationPage() {
                                     label="Senha"
                                     placeholder="Digite sua senha"
                                     type="password"
+                                    value={password}
+                                    error={errors.password}
+                                    onChange={(event => setPassword(event.target.value))}
                                     required
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
                                 <Input
@@ -250,9 +294,11 @@ export default function RegistrationPage() {
                                     placeholder="Confirme sua senha"
                                     type="password"
                                     required
+                                    value={confirmPassword}
+                                    error={errors.confirmPassword}
+                                    onChange={(event => setConfirmPassword(event.target.value))}
                                     maxLength={255}
                                     disabled={false}
-                                    className="border-2 border-primary rounded-sm"
                                 />
 
                             </div>
@@ -276,7 +322,7 @@ export default function RegistrationPage() {
                         {/* Botão de cadastro */}
                         <div className="flex items-center">
 
-                            <Button variant="primary" type="submit" className="rounded-lg w-"> <FaSave />Criar Conta</Button>
+                            <Button variant="primary" type="submit" className="rounded-lg w-full"> <FaSave />Criar Conta</Button>
 
                         </div>
 
