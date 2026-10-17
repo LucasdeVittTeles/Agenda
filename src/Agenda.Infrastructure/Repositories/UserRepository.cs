@@ -15,9 +15,11 @@ namespace Agenda.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Users user, CancellationToken cancellationToken = default)
+        public async Task<Users> AddAsync(Users user, CancellationToken cancellationToken = default)
         {
             await _context.Users.AddAsync(user, cancellationToken);
+
+            return user;
         }
 
         public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)

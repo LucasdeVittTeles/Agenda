@@ -11,6 +11,7 @@ public static class DependencyInjection
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBusinessServiceRepository, BusinessServiceRepository>();
+        services.AddScoped<IBusinessRepository, BusinessRepository>();
         services.AddScoped<DbInitializer>();
 
         return services;

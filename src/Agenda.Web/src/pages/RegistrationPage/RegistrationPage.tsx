@@ -122,6 +122,14 @@ export default function RegistrationPage() {
 
     }
 
+
+    function clearError(field: keyof typeof errors) {
+        setErrors((prev) => ({
+            ...prev,
+            [field]: undefined
+        }));
+    }
+
     return (
 
         <main className="min-h-screen bg-base-200 px-4 py-10">
@@ -150,7 +158,7 @@ export default function RegistrationPage() {
                 {/* Card principal */}
                 <Card className="w-full rounded-2xl shadow-lg">
 
-                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
 
                         <section className="rounded-xl border border-base-300 p-5">
 
@@ -173,39 +181,48 @@ export default function RegistrationPage() {
                             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
 
                                 <Input
-                                    id="name"
+                                    id="businessName"
                                     label="Nome do estabelecimento"
                                     placeholder="Digite o nome do estabelecimento"
                                     required
                                     value={businessName}
                                     error={errors.businessName}
-                                    onChange={(event => setBusinessName(event.target.value))}
+                                    onChange={(event) => {
+                                        setBusinessName(event.target.value)
+                                        clearError("businessName");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
 
                                 <Input
-                                    id="email"
+                                    id="businessEmail"
                                     label="E-mail comercial"
                                     type="email"
                                     placeholder="contato@seunegocio.com"
                                     required
                                     value={businessEmail}
                                     error={errors.businessEmail}
-                                    onChange={(event => setBusinessEmail(event.target.value))}
+                                    onChange={(event) => {
+                                        setBusinessEmail(event.target.value);
+                                        clearError("businessEmail");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
 
                                 <Input
-                                    id="phone"
+                                    id="businessPhone"
                                     label="Telefone"
                                     placeholder="(51) 91234-5678"
                                     mask="phone"
                                     required
                                     value={businessPhone}
                                     error={errors.businessPhone}
-                                    onChange={(event => setBusinessPhone(event.target.value))}
+                                    onChange={(event) => {
+                                        setBusinessPhone(event.target.value)
+                                        clearError("businessPhone");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
@@ -244,7 +261,10 @@ export default function RegistrationPage() {
                                     required
                                     value={name}
                                     error={errors.name}
-                                    onChange={(event => setName(event.target.value))}
+                                    onChange={(event) => {
+                                        setName(event.target.value);
+                                        clearError("name");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
@@ -257,7 +277,10 @@ export default function RegistrationPage() {
                                     required
                                     value={email}
                                     error={errors.email}
-                                    onChange={(event => setEmail(event.target.value))}
+                                    onChange={(event) => {
+                                        setEmail(event.target.value)
+                                        clearError("email");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
@@ -270,7 +293,10 @@ export default function RegistrationPage() {
                                     mask="phone"
                                     value={phone}
                                     error={errors.phone}
-                                    onChange={(event => setPhone(event.target.value))}
+                                    onChange={(event) => {
+                                        setPhone(event.target.value);
+                                        clearError("phone");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
@@ -282,7 +308,10 @@ export default function RegistrationPage() {
                                     type="password"
                                     value={password}
                                     error={errors.password}
-                                    onChange={(event => setPassword(event.target.value))}
+                                    onChange={(event) => {
+                                        setPassword(event.target.value)
+                                        clearError("password");
+                                    }}
                                     required
                                     maxLength={255}
                                     disabled={false}
@@ -296,7 +325,10 @@ export default function RegistrationPage() {
                                     required
                                     value={confirmPassword}
                                     error={errors.confirmPassword}
-                                    onChange={(event => setConfirmPassword(event.target.value))}
+                                    onChange={(event) => {
+                                        setConfirmPassword(event.target.value)
+                                        clearError("confirmPassword");
+                                    }}
                                     maxLength={255}
                                     disabled={false}
                                 />
