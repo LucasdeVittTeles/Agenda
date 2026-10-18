@@ -1,86 +1,94 @@
 ﻿using Agenda.Application.DTOs.Registration;
 using Agenda.Application.Exceptions;
+using Agenda.Application.Interfaces.Persistence;
 using Agenda.Application.Interfaces.Repositories;
 using Agenda.Domain.Entities;
+using Agenda.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
 
-namespace Agenda.Application.Services.Registration
+namespace Agenda.Application.Services.Registration;
+
+public class RegistrationService : IRegistrationService
 {
-    public class RegistrationService : IRegistrationService
+    private readonly IUserRepository _userRepository;
+    private readonly IBusinessRepository _businessRepository;
+    private readonly IPasswordHasher<Domain.Entities.Users> _passwordHasher;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public RegistrationService(
+        IUserRepository userRepository,
+        IBusinessRepository businessRepository,
+        IPasswordHasher<Domain.Entities.Users> passwordHasher,
+        IUnitOfWork unitOfWork)
+    {
+        _userRepository = userRepository;
+        _businessRepository = businessRepository;
+        _passwordHasher = passwordHasher;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<RegistrationResponse> CreateBusinessAndOwner(RegistrationDTO registrationDTO, CancellationToken cancellationToken = default)
     {
 
-        private readonly IUserRepository _userRepository;
-        private readonly IBusinessRepository _businessRepository;
-        private readonly IPasswordHasher<Domain.Entities.Users> _passwordService;
 
-        public RegistrationService(IUserRepository userRepository, IBusinessRepository businessRepository, IPasswordHasher<Domain.Entities.Users> passwordService)
+        var ownerEmailExists = await _userRepository.ExistsByEmailAsync(registrationDTO.Owner.Email, cancellationToken);
+
+        if (ownerEmailExists)
         {
-            _userRepository = userRepository;
-            _businessRepository = businessRepository;
-            _passwordService = passwordService;
+            throw new ConflictException("E-mail para usuário já está cadastrado.");
         }
 
-        public async Task<RegistrationResponse> CreateBusinessAndOwner(RegistrationDTO registrationDTO, CancellationToken cancellationToken = default)
+        var businessEmailExists = await _businessRepository.ExistsByEmailAsync(registrationDTO.Business.BusinessEmail, cancellationToken);
+
+        if (businessEmailExists)
         {
-
-            var business = await CreateBusiness(registrationDTO.Business, cancellationToken);
-
-            var user = await CreateOwner(registrationDTO.Owner, business.Id, cancellationToken);
-
-            return new RegistrationResponse { BusinessId = business.Id, UserId = user.Id };
-
+            throw new ConflictException("E-mail para estabelecimento já está cadastrado.");
         }
 
+        var business = CreateBusiness(registrationDTO.Business);
 
-        private async Task<Business> CreateBusiness(CreateBusinessDTO businessDTO, CancellationToken cancellationToken = default)
+        var owner = CreateOwner(registrationDTO.Owner);
+
+        owner.Business = business;
+
+        await _businessRepository.AddAsync(business, cancellationToken);
+
+        await _userRepository.AddAsync(owner, cancellationToken);
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return new RegistrationResponse() { BusinessId = business.Id, UserId = owner.Id };
+
+    }
+
+    private static Business CreateBusiness(CreateBusinessDTO businessDTO)
+    {
+        return new Business
         {
+            Name = businessDTO.BusinessName,
+            Email = businessDTO.BusinessEmail,
+            Phone = businessDTO.BusinessPhone,
+            Created_At = DateTime.UtcNow,
+            Updated_At = DateTime.UtcNow
+        };
+    }
 
-            var emailExists = await _businessRepository.ExistsByEmailAsync(businessDTO.BusinessEmail, cancellationToken);
-
-            if (emailExists)
-            {
-                throw new ConflictException("E-mail para estabelecimento já está cadastrado.");
-            }
-
-            var business = new Business
-            {
-                Name = businessDTO.BusinessName,
-                Email = businessDTO.BusinessEmail,
-                Phone = businessDTO.BusinessPhone,
-            };
-
-            return await _businessRepository.AddAsync(business, cancellationToken);
-
-        }
-
-
-        private async Task<Domain.Entities.Users> CreateOwner(CreateOwnerDTO ownerDTO, int businessId, CancellationToken cancellationToken = default)
+    private Domain.Entities.Users CreateOwner(CreateOwnerDTO ownerDTO)
+    {
+        var user = new Domain.Entities.Users
         {
+            Name = ownerDTO.Name,
+            Email = ownerDTO.Email,
+            Role = UserRoles.Owner,
+            StaffType = StaffType.Other,
+            Phone = ownerDTO.Phone,
+            AvatarUrl = "",
+            Created_At = DateTime.UtcNow,
+            Updated_At = DateTime.UtcNow
+        };
 
-            var emailExists = await _userRepository.ExistsByEmailAsync(ownerDTO.Email, cancellationToken);
+        user.PasswordHash = _passwordHasher.HashPassword(user, ownerDTO.Password);
 
-            if (emailExists)
-            {
-                throw new ConflictException("E-mail para usuário já está cadastrado.");
-            }
-
-            var user = new Domain.Entities.Users
-            {
-                BusinessId = businessId,
-                Name = ownerDTO.Name,
-                Email = ownerDTO.Email,
-                PasswordHash = _passwordService.HashPassword(null!, ownerDTO.Password), // temporário
-                Role = Domain.Enums.UserRoles.Owner,
-                StaffType = Domain.Enums.StaffType.Other,
-                Phone = ownerDTO.Phone,
-                AvatarUrl = "",
-                Created_At = DateTime.UtcNow,
-                Updated_At = DateTime.UtcNow
-            };
-
-            return await _userRepository.AddAsync(user, cancellationToken);
-
-        }
-
+        return user;
     }
 }

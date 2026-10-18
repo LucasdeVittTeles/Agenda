@@ -5,7 +5,7 @@ import { api } from "./client";
 
 export async function registrationBusiness(request: RegistrationRequest) {
 
-    const response = await api.post<CreateBusinessRequest>("/registration", request);
+    const response = await api.post<CreateBusinessRequest>("/Registration", request);
 
     return response.data;
 }

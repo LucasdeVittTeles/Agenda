@@ -1,5 +1,5 @@
 export interface CreateBusinessRequest {
-    name: string;
-    email: string;
-    phone: string;
+    businessName: string;
+    businessEmail: string;
+    businessPhone: string;
 }

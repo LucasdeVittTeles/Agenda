@@ -17,13 +17,9 @@ namespace Agenda.Infrastructure.Repositories
 
         public async Task<Business> AddAsync(Business business, CancellationToken cancellationToken = default)
         {
-
             await _context.Business.AddAsync(business, cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
             return business;
-
         }
 
         public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)

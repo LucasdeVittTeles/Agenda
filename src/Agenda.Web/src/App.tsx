@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Callback from "./auth/Callback";
-import { login } from "./auth/authService";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import Login from "./auth/Login";
 
 import { Toaster } from "sonner";
 
@@ -10,57 +12,36 @@ import MainLayout from "./components/layout/MainLayout";
 import FormServicePage from "./pages/ServicesPage/FormServicePage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 
-function Login() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <button
-        className="btn btn-primary"
-        onClick={login}
-      >
-        Entrar
-      </button>
-    </div>
-  );
-}
-
 function Dashboard() {
   return <h1>Dashboard</h1>;
 }
 
 export default function App() {
   return (
-
     <>
       <Toaster richColors position="top-right" />
+
       <BrowserRouter>
         <Routes>
-
-          {/* Rotas sem layout */}
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-
+          {/* Rotas públicas */}
+          <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/callback" element={<Callback />} />
 
-          <Route
-            path="/callback"
-            element={<Callback />}
-          />
-
-          {/* Rotas do sistema */}
-          <Route element={<MainLayout />}>
-
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/create" element={<FormServicePage />} />
-            <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
-
+          {/* Rotas protegidas */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/create" element={<FormServicePage />} />
+              <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
+            </Route>
           </Route>
 
+          {/* Rota inexistente */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
-
     </>
   );
 }

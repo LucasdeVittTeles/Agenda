@@ -10,6 +10,7 @@ import { IoIosBusiness } from "react-icons/io";
 import Card from "../../components/ui/Card/Card";
 import { FaSave } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
+import { login } from "../../auth/authService";
 
 export default function RegistrationPage() {
 
@@ -82,8 +83,6 @@ export default function RegistrationPage() {
 
         setErrors(newErrors);
 
-
-
         return Object.keys(newErrors).length === 0;
     }
 
@@ -96,9 +95,9 @@ export default function RegistrationPage() {
 
         const request: RegistrationRequest = {
             business: {
-                name: businessName,
-                email: businessEmail,
-                phone: businessPhone
+                businessName: businessName,
+                businessEmail: businessEmail,
+                businessPhone: businessPhone
             },
             owner: {
                 name: name,
@@ -112,9 +111,9 @@ export default function RegistrationPage() {
 
             await registrationBusiness(request);
 
-            navigate("/");
-
             toast.success("Conta criada com sucesso!");
+
+            await login();
 
         } catch (error) {
             toast.error(getApiErrorMessage(error));

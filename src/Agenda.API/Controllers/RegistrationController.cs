@@ -1,17 +1,30 @@
-﻿using Agenda.Application.DTOs.Services;
+﻿using Agenda.Application.DTOs.Registration;
+using Agenda.Application.Services.Registration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Agenda.API.Controllers
 {
-    public class RegistrationController : Controller
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class RegistrationController : ControllerBase
     {
 
-        [HttpPost]
-        public async Task<ActionResult<BusinessServiceResponse>> Create([FromBody]  , CancellationToken cancellationToken)
-        {
-            var service = await _servicesService.GetService(serviceId, cancellationToken);
+        private readonly IRegistrationService _registrationService;
 
-            return Ok(service);
+        public RegistrationController(IRegistrationService registrationService)
+        {
+            _registrationService = registrationService;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult<RegistrationResponse>> Create([FromBody] RegistrationDTO registrationDTO, CancellationToken cancellationToken)
+        {
+            var registration = await _registrationService.CreateBusinessAndOwner(registrationDTO, cancellationToken);
+
+            return StatusCode(StatusCodes.Status201Created, registration);
 
         }
 
