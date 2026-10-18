@@ -1,11 +1,10 @@
 import { api } from "./client";
-import { Services } from "../models/Services/Services";
-import { CreateBusinessServiceDTO } from "../models/Services/CreateBusinessServiceDTO";
-import { UpdateBusinessServiceDTO } from "../models/Services/UpdateBusinessServiceDTO";
+import { Services } from "../models/BusinessServices/Services";
+import { CreateBusinessServiceRequest } from "../models/BusinessServices/CreateBusinessServiceRequest";
+import { UpdateBusinessServiceRequest } from "../models/BusinessServices/UpdateBusinessServiceRequest";
 import { getUser } from "../auth/authService";
 
 const user = await getUser();
-
 
 export async function getServices(): Promise<Services[]> {
 
@@ -30,7 +29,7 @@ export async function getService(id: number): Promise<Services> {
     return response.data;
 }
 
-export async function createBusinessService(request: CreateBusinessServiceDTO): Promise<Services> {
+export async function createBusinessService(request: CreateBusinessServiceRequest): Promise<Services> {
 
     const response = await api.post<Services>("/services", request, {
         headers: {
@@ -41,7 +40,7 @@ export async function createBusinessService(request: CreateBusinessServiceDTO): 
     return response.data;
 }
 
-export async function updateBusinessService(id: number, request: UpdateBusinessServiceDTO): Promise<Services> {
+export async function updateBusinessService(id: number, request: UpdateBusinessServiceRequest): Promise<Services> {
 
     const response = await api.put<Services>(`/services/${id}`, request, {
         headers: {

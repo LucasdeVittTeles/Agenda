@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createBusinessService, getService, updateBusinessService } from "../../api/services.api";
-import { CreateBusinessServiceDTO } from "../../models/Services/CreateBusinessServiceDTO";
+import { CreateBusinessServiceRequest } from "../../models/BusinessServices/CreateBusinessServiceRequest";
 import { toast } from "sonner";
 import { getApiErrorMessage } from "../../utils/apiError";
 
@@ -62,7 +62,7 @@ export default function FormServicePage() {
         if (!validateForm())
             return;
 
-        const request: CreateBusinessServiceDTO = {
+        const request: CreateBusinessServiceRequest = {
             name,
             description,
             defaultDurationMinutes,
@@ -91,7 +91,7 @@ export default function FormServicePage() {
 
         <div className="flex justify-center">
 
-            <div className="card w-96 bg-base-100 card-lg shadow-sm">
+            <div className="card">
                 <div className="card-body">
                     <h2 className="card-title">Criar Serviço</h2>
 

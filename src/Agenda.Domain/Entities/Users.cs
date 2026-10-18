@@ -28,7 +28,7 @@ namespace Agenda.Domain.Entities
 
         // Navigation Properties
 
-        public Business Business { get; private set; }
+        public Business Business { get; set; }
         public List<Availability> Availabilities { get; private set; } = new List<Availability>();
         public List<BlockedTimes> BlockedTimes { get; set; } = new List<BlockedTimes>();
         public List<BusinessServiceStaff> BusinessServiceStaffs { get; private set; } = new List<BusinessServiceStaff>();
