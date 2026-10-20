@@ -9,6 +9,7 @@ import { FaSave } from "react-icons/fa";
 import Card from "../../components/ui/Card/Card";
 import Input from "../../components/ui/Input/Input";
 import Button from "../../components/ui/Button/Button";
+import Select from "../../components/ui/Select/Select";
 
 
 export default function FormBusinessPage() {
@@ -102,6 +103,44 @@ export default function FormBusinessPage() {
         } catch (error) {
             toast.error(getApiErrorMessage(error));
         }
+    }
+
+
+    const searchZipCode = async () => {
+
+        const cep = zipCode.replace(/\D/g, "");
+
+        if (cep.length !== 8) {
+            toast.error("CEP inválido.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `https://viacep.com.br/ws/${cep}/json/`
+            );
+
+            if (!response.ok) {
+                throw new Error("Erro ao consultar CEP.");
+            }
+
+            const data = await response.json();
+
+            if (data.erro) {
+                toast.error("CEP não encontrado.");
+                return;
+            }
+
+            setStreet(data.logradouro);
+            setDistrict(data.bairro);
+            setCity(data.localidade);
+            setState(data.uf);
+            setCountry("Brasil");
+
+        } catch {
+            toast.error("Não foi possível consultar o CEP.");
+        }
+
     }
 
 
@@ -236,6 +275,104 @@ export default function FormBusinessPage() {
                                 <h2 className="text-lg font-bold">
                                     Dados de localidade
                                 </h2>
+
+                                <Input
+                                    id="zipCode"
+                                    label="CEP"
+                                    placeholder="Digite o CEP do estabelecimento"
+                                    mask="cep"
+                                    value={zipCode}
+                                    onChange={(event) => {
+                                        setZipCode(event.target.value)
+                                        searchZipCode();
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+                                <Input
+                                    id="street"
+                                    label="Rua"
+                                    placeholder="Digite o nome da rua"
+                                    value={street}
+                                    onChange={(event) => {
+                                        setStreet(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+                                <Input
+                                    id="number"
+                                    label="Numero"
+                                    placeholder="Digite o numero"
+                                    value={number}
+                                    onChange={(event) => {
+                                        setNumber(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+                                <Input
+                                    id="district"
+                                    label="Bairro"
+                                    placeholder="Digite o nome do bairro"
+                                    value={district}
+                                    onChange={(event) => {
+                                        setDistrict(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+                                <Input
+                                    id="city"
+                                    label="Cidade"
+                                    placeholder="Digite a cidade"
+                                    value={city}
+                                    onChange={(event) => {
+                                        setCity(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+
+                                <Select
+                                    id="state"
+                                    label="Estado"
+                                    options={[]}
+                                    adtionalLabel="teste"
+                                    placeholder="Selecione o estado"
+                                    value={state}
+                                />
+
+                                <Input
+                                    id="state"
+                                    label="Estado"
+                                    placeholder="Selecione o estado"
+                                    value={state}
+                                    onChange={(event) => {
+                                        setState(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+                                <Input
+                                    id="country"
+                                    label="Pais"
+                                    placeholder="Selecione o pais"
+                                    value={country}
+                                    onChange={(event) => {
+                                        setCountry(event.target.value)
+                                    }}
+                                    maxLength={255}
+                                    disabled={false}
+                                />
+
+
 
                             </>
                         )}
