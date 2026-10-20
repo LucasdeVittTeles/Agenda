@@ -1,5 +1,6 @@
 ﻿using Agenda.Application.DTOs.Business;
 using Agenda.Application.Exceptions;
+using Agenda.Application.Interfaces.Persistence;
 using Agenda.Application.Interfaces.Repositories;
 using Agenda.Application.Interfaces.Services;
 
@@ -10,11 +11,13 @@ namespace Agenda.Application.Services.Business
 
         private readonly IBusinessRepository _businessRepository;
         private readonly ICurrentUser _currentUser;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BusinessService(IBusinessRepository businessRepository, ICurrentUser currentUser)
+        public BusinessService(IBusinessRepository businessRepository, ICurrentUser currentUser, IUnitOfWork unitOfWork)
         {
             _businessRepository = businessRepository;
             _currentUser = currentUser;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<BusinessDTO> GetBusiness(CancellationToken cancellationToken = default)
@@ -80,8 +83,7 @@ namespace Agenda.Application.Services.Business
             business.Country = updateBusinessDTO.Country;
             business.Updated_At = DateTime.UtcNow;
 
-            await _businessRepository.UpdateAsync(business, cancellationToken);
-
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
     }
