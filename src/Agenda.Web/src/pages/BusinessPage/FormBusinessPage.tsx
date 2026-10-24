@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpdateBusinessRequest } from "../../models/Business/UpdateBusinessRequest";
 import { toast } from "sonner";
 import { getApiErrorMessage } from "../../utils/apiError";
 import { updateBusiness } from "../../api/Business";
-import { MdModeEdit } from "react-icons/md";
-import { FaSave } from "react-icons/fa";
+import { FaMapMarkerAlt, FaSave } from "react-icons/fa";
 import Card from "../../components/ui/Card/Card";
 import Input from "../../components/ui/Input/Input";
 import Button from "../../components/ui/Button/Button";
-import Select from "../../components/ui/Select/Select";
-
+import Select, { SelectOption } from "../../components/ui/Select/Select";
+import { getCities, getStates } from "../../api/ibgeApi";
+import { IoIosBusiness } from "react-icons/io";
 
 export default function FormBusinessPage() {
 
@@ -32,7 +32,6 @@ export default function FormBusinessPage() {
     const [district, setDistrict] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [country, setCountry] = useState("");
 
     const [errors, setErrors] = useState<{
         name?: string;
@@ -42,6 +41,8 @@ export default function FormBusinessPage() {
 
     type BusinessTab = "main" | "address";
     const [activeTab, setActiveTab] = useState<BusinessTab>("main");
+    const [statesList, setStatesList] = useState<SelectOption[]>([]);
+    const [citiesList, setCitiesList] = useState<SelectOption[]>([]);
 
     function validateForm() {
 
@@ -69,6 +70,51 @@ export default function FormBusinessPage() {
         }));
     }
 
+    useEffect(() => {
+
+        async function loadStates() {
+            try {
+                const response = await getStates();
+
+                const options: SelectOption[] = response.map((item) => ({
+                    label: item.nome,
+                    value: item.sigla,
+                    aditionalLabel: item.sigla
+                }));
+
+                setStatesList(options);
+            } catch {
+                toast.error("Erro ao carregar estados.");
+            }
+        }
+
+        void loadStates();
+
+    }, []);
+
+
+    useEffect(() => {
+
+        async function loadCities() {
+            try {
+
+                const response = await getCities(state);
+
+                const options: SelectOption[] = response.map((item) => ({
+                    label: item.nome,
+                    value: item.id.toString(),
+                }));
+
+                setCitiesList(options);
+            } catch {
+                toast.error("Erro ao carregar estados.");
+            }
+        }
+
+        void loadCities();
+
+    }, [state]);
+
     async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
 
         event.preventDefault();
@@ -89,7 +135,6 @@ export default function FormBusinessPage() {
             district,
             city,
             state,
-            country
         };
 
         try {
@@ -135,7 +180,6 @@ export default function FormBusinessPage() {
             setDistrict(data.bairro);
             setCity(data.localidade);
             setState(data.uf);
-            setCountry("Brasil");
 
         } catch {
             toast.error("Não foi possível consultar o CEP.");
@@ -181,14 +225,18 @@ export default function FormBusinessPage() {
 
                         {activeTab === "main" && (
                             <>
+
                                 <div className="mb-6 flex items-center gap-4">
                                     <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-primary">
-                                        <MdModeEdit size={32} />
+                                        <IoIosBusiness size={32} />
                                     </div>
                                     <div>
                                         <h2 className="text-lg font-bold">
                                             Dados principais
                                         </h2>
+                                        <p className="text-sm text-base-content/60">
+                                            Informações básicas do seu estabelecimento.
+                                        </p>
                                     </div>
                                 </div>
 
@@ -224,25 +272,45 @@ export default function FormBusinessPage() {
                                     disabled={false}
                                 />
 
-                                <Input
-                                    id="phone"
-                                    label="Telefone"
-                                    placeholder="(51) 91234-5678"
-                                    required
-                                    mask="phone"
-                                    value={phone}
-                                    error={errors.phone}
-                                    onChange={(event) => {
-                                        setPhone(event.target.value);
-                                        clearError("phone");
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
+                                <div className="flex gap-3">
+
+                                    <Input
+                                        id="phone"
+                                        label="Telefone"
+                                        placeholder="(51) 91234-5678"
+                                        required
+                                        mask="phone"
+                                        value={phone}
+                                        error={errors.phone}
+                                        onChange={(event) => {
+                                            setPhone(event.target.value);
+                                            clearError("phone");
+                                        }}
+                                        maxLength={255}
+                                        disabled={false}
+                                    />
+
+
+
+                                    <Input
+                                        id="whatsapp"
+                                        label="WhatsApp"
+                                        placeholder="(51) 91234-5678"
+                                        mask="phone"
+                                        value={whatsapp}
+                                        onChange={(event) => {
+                                            setWhatsapp(event.target.value);
+                                        }}
+                                        maxLength={255}
+                                        disabled={false}
+                                    />
+
+
+                                </div>
 
                                 <Input
                                     id="document"
-                                    label="Documento"
+                                    label="Documento (CNPJ)"
                                     placeholder="12.345.678/0001-XX"
                                     mask="cnpj"
                                     value={document}
@@ -253,28 +321,28 @@ export default function FormBusinessPage() {
                                     disabled={false}
                                 />
 
-                                <Input
-                                    id="whatsapp"
-                                    label="WhatsApp"
-                                    placeholder="(51) 91234-5678"
-                                    mask="phone"
-                                    value={whatsapp}
-                                    onChange={(event) => {
-                                        setWhatsapp(event.target.value);
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
-
-
                             </>
                         )}
 
                         {activeTab === "address" && (
+
                             <>
-                                <h2 className="text-lg font-bold">
-                                    Dados de localidade
-                                </h2>
+
+                                <div className="mb-6 flex items-center gap-4">
+                                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 text-primary">
+                                        <FaMapMarkerAlt size={32} />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-lg font-bold">
+                                            Dados de localidade
+                                        </h2>
+                                        <p className="text-sm text-base-content/60">
+                                            endereço do seu estabelecimento.
+                                        </p>
+                                    </div>
+                                </div>
+
+
 
                                 <Input
                                     id="zipCode"
@@ -290,29 +358,36 @@ export default function FormBusinessPage() {
                                     disabled={false}
                                 />
 
-                                <Input
-                                    id="street"
-                                    label="Rua"
-                                    placeholder="Digite o nome da rua"
-                                    value={street}
-                                    onChange={(event) => {
-                                        setStreet(event.target.value)
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
+                                <div className="flex w-full gap-3">
+                                    <div className="min-w-0 flex-1">
+                                        <Input
+                                            id="street"
+                                            label="Rua"
+                                            placeholder="Digite o nome da rua"
+                                            value={street}
+                                            onChange={(event) => {
+                                                setStreet(event.target.value)
+                                            }}
+                                            maxLength={255}
+                                            disabled={false}
+                                        />
+                                    </div>
 
-                                <Input
-                                    id="number"
-                                    label="Numero"
-                                    placeholder="Digite o numero"
-                                    value={number}
-                                    onChange={(event) => {
-                                        setNumber(event.target.value)
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
+                                    <div className="w-75 shrink-0">
+                                        <Input
+                                            id="number"
+                                            label="Numero"
+                                            placeholder="Digite o numero"
+                                            value={number}
+                                            onChange={(event) => {
+                                                setNumber(event.target.value)
+                                            }}
+                                            maxLength={255}
+                                            disabled={false}
+                                        />
+                                    </div>
+
+                                </div>
 
                                 <Input
                                     id="district"
@@ -326,52 +401,23 @@ export default function FormBusinessPage() {
                                     disabled={false}
                                 />
 
-                                <Input
-                                    id="city"
-                                    label="Cidade"
-                                    placeholder="Digite a cidade"
-                                    value={city}
-                                    onChange={(event) => {
-                                        setCity(event.target.value)
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
-
-
                                 <Select
                                     id="state"
                                     label="Estado"
-                                    options={[]}
-                                    adtionalLabel="teste"
+                                    options={statesList}
                                     placeholder="Selecione o estado"
                                     value={state}
+                                    onChange={(event) => setState(event.target.value)}
                                 />
 
-                                <Input
-                                    id="state"
-                                    label="Estado"
-                                    placeholder="Selecione o estado"
-                                    value={state}
-                                    onChange={(event) => {
-                                        setState(event.target.value)
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
+                                <Select
+                                    id="city"
+                                    label="Cidade"
+                                    options={citiesList}
+                                    placeholder="Selecione a cidade"
+                                    value={city}
+                                    onChange={(event) => setCity(event.target.value)}
                                 />
-
-                                <Input
-                                    id="country"
-                                    label="Pais"
-                                    placeholder="Selecione o pais"
-                                    value={country}
-                                    onChange={(event) => {
-                                        setCountry(event.target.value)
-                                    }}
-                                    maxLength={255}
-                                    disabled={false}
-                                />
-
 
 
                             </>

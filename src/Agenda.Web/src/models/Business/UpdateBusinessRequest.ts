@@ -11,5 +11,4 @@ export interface UpdateBusinessRequest {
     district: string;
     city: string;
     state: string;
-    country: string;
 }
