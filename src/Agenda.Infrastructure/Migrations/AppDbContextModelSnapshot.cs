@@ -211,10 +211,14 @@ namespace Agenda.Infrastructure.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("email");
 
-                    b.Property<string>("Logo_Url")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("logo_url");
+                    b.Property<string>("Logo_Content_Type")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("logo_content_type");
+
+                    b.Property<byte[]>("Logo_Data")
+                        .HasColumnType("bytea")
+                        .HasColumnName("logo_data");
 
                     b.Property<string>("Name")
                         .IsRequired()

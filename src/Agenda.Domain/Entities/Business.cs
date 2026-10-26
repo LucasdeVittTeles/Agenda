@@ -9,7 +9,8 @@
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Whatsapp { get; set; } = string.Empty;
-        public string Logo_Url { get; set; } = string.Empty;
+        public byte[]? Logo_Data { get; set; }
+        public string? Logo_Content_Type { get; set; }
         public string Zip_Code { get; set; } = string.Empty;
         public string Street { get; set; } = string.Empty;
         public string Number { get; set; } = string.Empty;
