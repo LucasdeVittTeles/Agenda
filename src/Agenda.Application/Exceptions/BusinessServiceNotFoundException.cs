@@ -2,7 +2,7 @@
 
 public class BusinessServiceNotFoundException : Exception
 {
-    public BusinessServiceNotFoundException(int serviceId)
+    public BusinessServiceNotFoundException(int? serviceId)
         : base($"Serviço com ID {serviceId} não foi encontrado.")
     {
     }

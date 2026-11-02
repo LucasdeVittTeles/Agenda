@@ -11,6 +11,7 @@ import ServicesPage from "./pages/ServicesPage/ServicesPage";
 import MainLayout from "./components/layout/MainLayout";
 import FormServicePage from "./pages/ServicesPage/FormServicePage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
+import FormBusinessPage from "./pages/BusinessPage/FormBusinessPage";
 
 function Dashboard() {
   return <h1>Dashboard</h1>;
@@ -35,6 +36,7 @@ export default function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/services/create" element={<FormServicePage />} />
               <Route path="/services/:serviceId/edit" element={<FormServicePage />} />
+              <Route path="/business" element={<FormBusinessPage />} />
             </Route>
           </Route>
 

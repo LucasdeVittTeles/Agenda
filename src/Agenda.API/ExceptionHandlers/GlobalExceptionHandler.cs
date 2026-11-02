@@ -20,6 +20,13 @@ public class GlobalExceptionHandler : IExceptionHandler
                 Detail = exception.Message
             },
 
+            BusinessNotFoundException => new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Recurso não encontrado",
+                Detail = exception.Message
+            },
+
             BusinessNotBeNullException => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,

@@ -44,12 +44,15 @@ namespace Agenda.Infrastructure.Context.Configurations
                 .HasMaxLength(20)
                 .IsRequired(false);
 
-
-            builder.Property(x => x.Logo_Url)
-                .HasColumnName("logo_url")
-                .HasMaxLength(1000)
+            builder.Property(x => x.Logo_Data)
+                .HasColumnName("logo_data")
+                .HasColumnType("bytea")
                 .IsRequired(false);
 
+            builder.Property(x => x.Logo_Content_Type)
+                .HasColumnName("logo_content_type")
+                .HasMaxLength(100)
+                .IsRequired(false);
 
             builder.Property(x => x.Zip_Code)
                 .HasColumnName("zip_code")

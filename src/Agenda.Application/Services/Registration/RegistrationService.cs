@@ -61,9 +61,9 @@ public class RegistrationService : IRegistrationService
 
     }
 
-    private static Business CreateBusiness(CreateBusinessDTO businessDTO)
+    private static Domain.Entities.Business CreateBusiness(CreateBusinessDTO businessDTO)
     {
-        return new Business
+        return new Domain.Entities.Business
         {
             Name = businessDTO.BusinessName,
             Email = businessDTO.BusinessEmail,
