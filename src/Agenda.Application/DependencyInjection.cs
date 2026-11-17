@@ -1,4 +1,5 @@
 ﻿using Agenda.Application.Services.Business;
+using Agenda.Application.Services.BusinessSettings;
 using Agenda.Application.Services.Registration;
 using Agenda.Application.Services.Services;
 using Agenda.Application.Services.Users;
@@ -22,6 +23,8 @@ namespace Agenda.Application
             services.AddScoped<IRegistrationService, RegistrationService>();
 
             services.AddScoped<IBusinessService, Services.Business.BusinessService>();
+
+            services.AddScoped<IBusinessSettingsService, BusinessSettingsService>();
 
             return services;
         }

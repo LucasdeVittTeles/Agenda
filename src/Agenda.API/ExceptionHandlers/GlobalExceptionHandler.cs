@@ -13,6 +13,14 @@ public class GlobalExceptionHandler : IExceptionHandler
     {
         var problemDetails = exception switch
         {
+
+            BusinessSettingsNotFoundException => new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Recurso não encontrado",
+                Detail = exception.Message
+            },
+
             BusinessServiceNotFoundException => new ProblemDetails
             {
                 Status = StatusCodes.Status404NotFound,
